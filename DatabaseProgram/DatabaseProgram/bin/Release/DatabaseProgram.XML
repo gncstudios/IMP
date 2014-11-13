@@ -1,0 +1,195 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DatabaseProgram</name>
+    </assembly>
+    <members>
+        <member name="T:ImperialMusicPlayer.Database1DataSet">
+             <summary>
+            Represents a strongly typed in-memory cache of data.
+            </summary>
+        </member>
+        <member name="T:ImperialMusicPlayer.MusicPlayer">
+            <summary>
+            Mucis Player Class. Defines the MusicPlayer</summary>
+            <remarks>
+            Longer comments can be associated with a type or member through
+            the remarks tag.</remarks>
+        </member>
+        <member name="M:ImperialMusicPlayer.MusicPlayer.InstertTrackIntoDataBaseFromFilePath(System.String)">
+            <summary>
+            InstertTrackIntoDataBaseFromFilePath
+            </summary>
+            <param name="filePath">Filepath used to extract ID3Tag information and
+            insterts it into the database.</param>
+            <remarks>
+            This method insterts a track into the database from the filename</remarks>
+        </member>
+        <member name="M:ImperialMusicPlayer.MusicPlayer.LibraryView_MouseClick(System.Object,System.Windows.Forms.MouseEventArgs)">
+            <summary></summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:ImperialMusicPlayer.MusicPlayer.rightClickToolStripMenuItem_Click(System.Object,System.EventArgs)">
+            <summary></summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:ImperialMusicPlayer.MusicPlayer.stopToolStripMenuItem_Click(System.Object,System.EventArgs)">
+            <summary></summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:ImperialMusicPlayer.MusicPlayer.LibraryView_MouseDoubleClick(System.Object,System.Windows.Forms.MouseEventArgs)">
+            <summary></summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:ImperialMusicPlayer.MusicPlayer.ForwardButton_MouseClick(System.Object,System.Windows.Forms.MouseEventArgs)">
+            <summary></summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:ImperialMusicPlayer.MusicPlayer.RewindButton_MouseClick(System.Object,System.Windows.Forms.MouseEventArgs)">
+            <summary></summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:ImperialMusicPlayer.MusicPlayer.deleteToolStripMenuItem_Click(System.Object,System.EventArgs)">
+            <summary></summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:ImperialMusicPlayer.MusicPlayer.pauseToolStripMenuItem_Click(System.Object,System.EventArgs)">
+            <summary></summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:ImperialMusicPlayer.MusicPlayer.addSongsToolStripMenuItem_Click(System.Object,System.EventArgs)">
+            <summary></summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:ImperialMusicPlayer.MusicPlayer.deleteToolStripMenuItem1_Click(System.Object,System.EventArgs)">
+            <summary></summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:ImperialMusicPlayer.MusicPlayer.aboutTheImerialMusicPlayerToolStripMenuItem_Click(System.Object,System.EventArgs)">
+            <summary></summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:ImperialMusicPlayer.MusicPlayer.helpToolStripMenuItem_Click(System.Object,System.EventArgs)">
+            <summary></summary>
+            <remarks></remarks>
+        </member>
+        <member name="F:ImperialMusicPlayer.MusicPlayer.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:ImperialMusicPlayer.MusicPlayer.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:ImperialMusicPlayer.MusicPlayer.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:ImperialMusicPlayer.Program.Main">
+            <summary>
+            The main entry point for the application.
+            </summary>
+        </member>
+        <member name="T:ImperialMusicPlayer.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:ImperialMusicPlayer.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:ImperialMusicPlayer.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:ImperialMusicPlayer.Properties.Resources.glyphicons_145_folder_plus">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:ImperialMusicPlayer.Properties.Resources.glyphicons_146_folder_minus">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:ImperialMusicPlayer.Properties.Resources.glyphicons_158_show_lines">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:ImperialMusicPlayer.Properties.Resources.glyphicons_170_step_backward">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:ImperialMusicPlayer.Properties.Resources.glyphicons_172_rewind">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:ImperialMusicPlayer.Properties.Resources.glyphicons_173_play">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:ImperialMusicPlayer.Properties.Resources.glyphicons_174_pause">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:ImperialMusicPlayer.Properties.Resources.glyphicons_175_stop">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:ImperialMusicPlayer.Properties.Resources.glyphicons_176_forward">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:ImperialMusicPlayer.Properties.Resources.glyphicons_178_step_forward">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:ImperialMusicPlayer.Properties.Resources.glyphicons_190_circle_plus">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:ImperialMusicPlayer.Properties.Resources.glyphicons_192_circle_remove">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:ImperialMusicPlayer.Properties.Resources.IMP_Logo">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:ImperialMusicPlayer.Properties.Resources.IMP_Logo_80_80">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:ImperialMusicPlayer.Properties.Resources.ImperialMusicPlayerLibraryBackground">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:ImperialMusicPlayer.Properties.Resources.PlayButton">
+            <summary>
+              Looks up a localized string similar to .
+            </summary>
+        </member>
+    </members>
+</doc>
