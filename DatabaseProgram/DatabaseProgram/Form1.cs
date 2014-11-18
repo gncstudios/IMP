@@ -982,11 +982,8 @@ namespace ImperialMusicPlayer
                     (TrackMenu.Items["addToPlaylistToolStripMenuItem"] as 
                      ToolStripMenuItem).DropDownItems.Add(TrackMenu.Items.Add(
                      playlist.PlaylistName, 
-                     Image.FromFile("C:\\Users\\Samue_000\\documents\\visual " 
-                     + "studio 2012\\Projects\\DatabaseProgram\\" 
-                     + "DatabaseProgram\\Resources\\" 
-                     + "glyphicons_159_playlist.png"),
-                      addToPlaylistRightClickDynamicMenuItem_Click));
+                     ImperialMusicPlayer.Properties.Resources.glyphicons_159_playlist,
+                     addToPlaylistRightClickDynamicMenuItem_Click));
 
                     /* Set the name of the child items to the ID of the 
                      * playlist

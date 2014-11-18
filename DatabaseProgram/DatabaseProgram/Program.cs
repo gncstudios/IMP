@@ -20,6 +20,8 @@ using System.Data.Linq.Mapping;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using System.Configuration;
+
 namespace ImperialMusicPlayer
 {
     class MusicID3Tag
@@ -73,7 +75,8 @@ namespace ImperialMusicPlayer
     }
     class MyDatabase : DataContext
     {
-        private const String LoginString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=\"C:\\Users\\Samue_000\\documents\\visual studio 2012\\Projects\\DatabaseProgram\\DatabaseProgram\\Database1.mdf\";Integrated Security=True";
+        //private const String LoginString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=\"C:\\Users\\eblain\\documents\\CECS 343\\Semester Project\\IMP\\DatabaseProgram\\DatabaseProgram\\Database1.mdf\";Integrated Security=True";
+        public static String LoginString = ConfigurationManager.ConnectionStrings["SongDatabase"].ToString();
         public Table<Track> SongLibrary;
         public Table<Playlist> PlaylistLibrary;
         public Table<PlaylistReference> PlaylistReferences;
@@ -90,6 +93,10 @@ namespace ImperialMusicPlayer
         [STAThread]
         static void Main()
         {
+            String filePath = System.Reflection.Assembly.GetEntryAssembly().Location;
+            String correctedPath = filePath.Substring(0, filePath.IndexOf("bin"));
+            ConfigurationManager.AppSettings["DataDirectory"] = correctedPath;
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MusicPlayer());
