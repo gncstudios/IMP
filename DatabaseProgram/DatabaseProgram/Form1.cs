@@ -199,7 +199,7 @@ namespace ImperialMusicPlayer
             UpdateTree();
             UpdatePlaylistMenuItems();
             
-            //DropTables();
+           //DropTables();
 
         }
         ///////////////////////////////////////////////////////////////////////
@@ -247,7 +247,7 @@ namespace ImperialMusicPlayer
             }
             
             try {
-            db.ExecuteCommand("DROP TABLE PlaylistReference");
+            db.ExecuteCommand("DROP TABLE PlaylistReferences");
             db.SubmitChanges();
             }
             catch (Exception e) {
