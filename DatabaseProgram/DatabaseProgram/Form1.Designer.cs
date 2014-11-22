@@ -285,6 +285,7 @@
             this.createPlaylistToolStripMenuItem.Name = "createPlaylistToolStripMenuItem";
             this.createPlaylistToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
             this.createPlaylistToolStripMenuItem.Text = "Create Playlist";
+            this.createPlaylistToolStripMenuItem.Click += new System.EventHandler(this.CreatePlaylist_Click);
             // 
             // deleteAllPlaylistsToolStripMenuItem
             // 
@@ -513,7 +514,7 @@
             this.openPlaylistInNewWindowToolStripMenuItem,
             this.deletePlaylistToolStripMenuItem});
             this.PlaylistRightClick.Name = "PlaylistRightClick";
-            this.PlaylistRightClick.Size = new System.Drawing.Size(231, 92);
+            this.PlaylistRightClick.Size = new System.Drawing.Size(231, 70);
             // 
             // playPlaylistToolStripMenuItem
             // 

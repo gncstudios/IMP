@@ -23,10 +23,10 @@ C:\Users\eblain\Documents\CECS 343\Semester Project\IMP\DatabaseProgram\Database
 C:\Users\eblain\Documents\CECS 343\Semester Project\IMP\DatabaseProgram\DatabaseProgram\obj\Debug\ImperialMusicPlayer.MusicPlayer.resources
 C:\Users\eblain\Documents\CECS 343\Semester Project\IMP\DatabaseProgram\DatabaseProgram\obj\Debug\ImperialMusicPlayer.Properties.Resources.resources
 C:\Users\eblain\Documents\CECS 343\Semester Project\IMP\DatabaseProgram\DatabaseProgram\obj\Debug\DatabaseProgram.csproj.GenerateResource.Cache
-C:\Users\eblain\Documents\CECS 343\Semester Project\IMP\DatabaseProgram\DatabaseProgram\bin\Debug\Database1.mdf
-C:\Users\eblain\Documents\CECS 343\Semester Project\IMP\DatabaseProgram\DatabaseProgram\bin\Debug\Database1_log.ldf
 C:\Users\eblain\Documents\CECS 343\Semester Project\IMP\DatabaseProgram\DatabaseProgram\bin\Debug\DatabaseProgram.exe
 C:\Users\eblain\Documents\CECS 343\Semester Project\IMP\DatabaseProgram\DatabaseProgram\bin\Debug\DatabaseProgram.pdb
 C:\Users\eblain\Documents\CECS 343\Semester Project\IMP\DatabaseProgram\DatabaseProgram\bin\Debug\policy.2.0.taglib-sharp.config
 C:\Users\eblain\Documents\CECS 343\Semester Project\IMP\DatabaseProgram\DatabaseProgram\obj\Debug\DatabaseProgram.exe
 C:\Users\eblain\Documents\CECS 343\Semester Project\IMP\DatabaseProgram\DatabaseProgram\obj\Debug\DatabaseProgram.pdb
+C:\Users\eblain\Documents\CECS 343\Semester Project\IMP\DatabaseProgram\DatabaseProgram\bin\Debug\SongLibrary.mdf
+C:\Users\eblain\Documents\CECS 343\Semester Project\IMP\DatabaseProgram\DatabaseProgram\bin\Debug\SongLibrary_log.ldf

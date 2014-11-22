@@ -75,10 +75,10 @@ namespace ImperialMusicPlayer
     }
     class MyDatabase : DataContext
     {
-        //private const String LoginString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=\"C:\\Users\\eblain\\documents\\CECS 343\\Semester Project\\IMP\\DatabaseProgram\\DatabaseProgram\\Database1.mdf\";Integrated Security=True";
+        //private const String LoginString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=\"C:\\Users\\eblain\\documents\\CECS 343\\Semester Project\\IMP\\DatabaseProgram\\DatabaseProgram\\SongLibrary.mdf\";Integrated Security=True";
         //String filePath = System.Reflection.Assembly.GetEntryAssembly().Location;
         private static String correctedPath = System.Reflection.Assembly.GetEntryAssembly().Location.Substring(0, System.Reflection.Assembly.GetEntryAssembly().Location.IndexOf("bin"));
-        private static String LoginString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=\""+correctedPath+"Database1.mdf\";Integrated Security=True";
+        private static String LoginString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=\""+correctedPath+"SongLibrary.mdf\";Integrated Security=True";
         //public static String LoginString = ConfigurationManager.ConnectionStrings["SongDatabase"].ToString();
         public Table<Track> SongLibrary;
         public Table<Playlist> PlaylistLibrary;
@@ -202,16 +202,16 @@ namespace ImperialMusicPlayer {
     class MyDatabase : DataContext {
         //public String filePath = System.Reflection.Assembly.GetEntryAssembly().Location;
         //public String data = ConfigurationManager.AppSettings["DataDirectory"];
-        //private const String LoginString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=\"C:\\Users\\Samue_000\\documents\\visual studio 2012\\Projects\\DatabaseProgram\\DatabaseProgram\\Database1.mdf\";Integrated Security=True";
-        //private static String LoginString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=\..\\..\\" + System.Reflection.Assembly.GetEntryAssembly().Location + "Database1.mdf\;Integrated Security=True";
-        //public static String LoginString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=\"" + System.Reflection.Assembly.GetEntryAssembly().Location + "\\Database1.mdf\";Integrated Security=True";
+        //private const String LoginString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=\"C:\\Users\\Samue_000\\documents\\visual studio 2012\\Projects\\DatabaseProgram\\DatabaseProgram\\SongLibrary.mdf\";Integrated Security=True";
+        //private static String LoginString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=\..\\..\\" + System.Reflection.Assembly.GetEntryAssembly().Location + "SongLibrary.mdf\;Integrated Security=True";
+        //public static String LoginString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=\"" + System.Reflection.Assembly.GetEntryAssembly().Location + "\\SongLibrary.mdf\";Integrated Security=True";
         public static String LoginString = ConfigurationManager.ConnectionStrings["SongDatabase"].ToString();
         public Table<Track> SongLibrary;
         public Table<Playlist> PlaylistLibrary;
         public Table<PlaylistReference> PlaylistReferences;
         public MyDatabase()
             : base(LoginString) {
-            //LoginString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=\"..\\..\\" + System.Reflection.Assembly.GetEntryAssembly().Location + "Database1.mdf\";Integrated Security=True";
+            //LoginString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=\"..\\..\\" + System.Reflection.Assembly.GetEntryAssembly().Location + "SongLibrary.mdf\";Integrated Security=True";
         }
     }
     static class Program {

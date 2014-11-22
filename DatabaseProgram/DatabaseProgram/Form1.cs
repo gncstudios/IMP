@@ -491,11 +491,22 @@ namespace ImperialMusicPlayer
 
                     }
                 }
+                else //file path is null because it is from inside the musicplayer
+                {
+                    int songId = Convert.ToInt32(e.Data.GetData(DataFormats.Text, true).ToString());
+
+                    int playlistId = Convert.ToInt32(TreeExplorer.SelectedNode.Name.ToString());
+                    if (TreeExplorer.SelectedNode.Text != "Library" && TreeExplorer.SelectedNode.Text != "Playlist")
+                    {
+                        addSongToPlaylist(songId, playlistId);
+                    }
+                }
             }
             catch (Exception err)
             {
                 Console.WriteLine(err.Message);
             }
+            
             UpdateDisplayToShowLibrary();
 
           
@@ -1128,7 +1139,7 @@ namespace ImperialMusicPlayer
                     Console.WriteLine(err.Message);
                 }
              }
-             else if (TreeExplorer.SelectedNode == TreeExplorer.Nodes[1]) {
+             else if (TreeExplorer.SelectedNode == TreeExplorer.Nodes[1] || TreeExplorer.SelectedNode == TreeExplorer.Nodes[0]) {
                  UpdateDisplayToShowLibrary();
              }
         }
@@ -1186,6 +1197,11 @@ namespace ImperialMusicPlayer
                 Point moveLibraryLeftOverDeletedTreeView = newPlaylistWindow.LibraryView.Location;
                 moveLibraryLeftOverDeletedTreeView.Offset(-184, 0);
                 newPlaylistWindow.LibraryView.Location = moveLibraryLeftOverDeletedTreeView;
+
+                //Reset main window to the Library view by setting selected node and updating library view
+                TreeExplorer.SelectedNode = TreeExplorer.Nodes[0];
+                UpdateDisplayToShowLibrary();
+                
             }
 
         }
@@ -1208,28 +1224,67 @@ namespace ImperialMusicPlayer
             LibraryView.DoDragDrop(LibraryView.SelectedItems[0].Text, DragDropEffects.Copy | DragDropEffects.Move);
         }
 
-        private void TreeExplorer_DragEnter(object sender, DragEventArgs e) {
-            
-                e.Effect = DragDropEffects.Copy;
-            
+        private void TreeExplorer_DragEnter(object sender, DragEventArgs e) 
+        {
+            e.Effect = DragDropEffects.Copy;
         }
 
         private void TreeExplorer_DragDrop(object sender, DragEventArgs e) {
-            try {
+            try 
+            {
                 Point dragPosition = new Point(System.Windows.Forms.Cursor.Position.X, System.Windows.Forms.Cursor.Position.Y);
-                Console.WriteLine(e.Data.GetData(DataFormats.Text, true).ToString() + "\n" + dragPosition.ToString());
-                int songId = Convert.ToInt32(e.Data.GetData(DataFormats.Text, true).ToString());
                 TreeNode targetNode = TreeExplorer.GetNodeAt(TreeExplorer.PointToClient(dragPosition));
                 TreeExplorer.SelectedNode = targetNode;
-                int playlistId = Convert.ToInt32(targetNode.Name.ToString());
-                if (targetNode.Text != "Library" && targetNode.Text != "Playlist") {
-                    addSongToPlaylist(songId, playlistId);
+                
+                string[] filePath = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+                if (filePath != null)
+                {
+                    foreach (string path in filePath)
+                    {
+                        // check if you are adding a uniqe record
+                        if (!(db.SongLibrary.Any(track => track.Path == path)))
+                        {
+                            InstertTrackIntoDataBaseFromFilePath(path);
+                            if (TreeExplorer.SelectedNode.Name != "Library" || TreeExplorer.SelectedNode.Name != "Playlist")
+                            {
+                                addSongToPlaylist(db.SongLibrary.OrderByDescending(i => i.ID).FirstOrDefault().ID, Convert.ToInt32(TreeExplorer.SelectedNode.Name));
+
+                                UpdateDisplay();
+                                //Console.WriteLine(TreeExplorer.SelectedNode.Name);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Track already exists");
+                        }
+
+                    }
                 }
+                else//track is coming from inside the music player
+                {
+                    Console.WriteLine(e.Data.GetData(DataFormats.Text, true).ToString() + "\n" + dragPosition.ToString());
+                    int songId = Convert.ToInt32(e.Data.GetData(DataFormats.Text, true).ToString());
+
+                    int playlistId = Convert.ToInt32(targetNode.Name.ToString());
+                    if (targetNode.Text != "Library" && targetNode.Text != "Playlist")
+                    {
+                        addSongToPlaylist(songId, playlistId);
+                    }
+                }
+                
+               
+                
+                
                // MessageBox.Show("Added to " + targetNode.Text + " playlist");
             }
             catch (Exception error) {
                 Console.WriteLine("Drag to invalid playlist\n" + error.Message);
+
+
             }
+
+            UpdateDisplayToShowLibrary();
+
          }
 
 
