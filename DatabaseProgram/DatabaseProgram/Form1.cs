@@ -306,13 +306,14 @@ namespace ImperialMusicPlayer
 
 
 
-                        item.SubItems.Add(track.Path);
+                        //item.SubItems.Add(track.Path);
 
                         this.LibraryView.Items.Add(item);
 
                     }
                 }
-                else {
+                else
+                {
                     this.LibraryView.Items.Clear();
                     var playlistTracks = from Track track
                                          in db.SongLibrary
@@ -342,7 +343,7 @@ namespace ImperialMusicPlayer
 
 
 
-                            item.SubItems.Add(track.Path);
+                            //item.SubItems.Add(track.Path);
                             LibraryView.Items.Add(item);
                         }
                         Console.WriteLine(this.TreeExplorer.SelectedNode.Text + "\n" + this.TreeExplorer.SelectedNode.Name);
@@ -525,7 +526,7 @@ namespace ImperialMusicPlayer
                 LibraryView.Columns.Add("Year");
                 LibraryView.Columns.Add("Comment");
                 LibraryView.Columns.Add("Genre");
-                LibraryView.Columns.Add("Path");
+                //LibraryView.Columns.Add("Path");
             }
             catch (Exception err)
             {
@@ -973,6 +974,7 @@ namespace ImperialMusicPlayer
         private void CreatePlaylist_Click(object sender, EventArgs e) {
             CreatePlaylist();
         }
+        
         public void CreatePlaylist() {
             InstertPlaylistIntoSqlTable(Prompt.ShowDialog("Playlist Name", "New Playlist Name"));
             UpdatePlaylistMenuItems();
@@ -980,6 +982,7 @@ namespace ImperialMusicPlayer
             TreeExplorer.ExpandAll();
             TreeExplorer.SelectedNode = TreeExplorer.Nodes[TreeExplorer.Nodes.Count - 1].LastNode;
         }
+        
         public void UpdatePlaylistMenuItems() {
             try {
                 /* Clear the children Items in the right click
@@ -1011,11 +1014,13 @@ namespace ImperialMusicPlayer
                 Console.WriteLine(err.Message);
             }
         }
+        
         private void addToPlaylistRightClickDynamicMenuItem_Click(object sender, EventArgs e) {
             addSongToPlaylist(Convert.ToInt32(LibraryView.FocusedItem.SubItems[0].Text.ToString()), Convert.ToInt32((sender as ToolStripMenuItem).Name.ToString()));
 
             TreeExplorer.ExpandAll();
         }
+        
         public void InstertPlaylistIntoSqlTable(string name) {
             Playlist playlist = new Playlist();
             if (db.PlaylistLibrary.Count() > 0) {
@@ -1028,6 +1033,7 @@ namespace ImperialMusicPlayer
             db.PlaylistLibrary.InsertOnSubmit(playlist);
             db.SubmitChanges();
         }
+        
         public void UpdateTree() {
             TreeExplorer.Nodes[1].Nodes.Clear();
             foreach (Playlist playlist in db.PlaylistLibrary) {
@@ -1122,7 +1128,7 @@ namespace ImperialMusicPlayer
 
 
 
-                        item.SubItems.Add(track.Path);
+                        //item.SubItems.Add(track.Path);
 
                         LibraryView.Items.Add(item);
 
@@ -1149,6 +1155,7 @@ namespace ImperialMusicPlayer
                 
             
         }
+      
         public void addSongToPlaylist(int songId, int playlistId) {
             PlaylistReference playlistReference = new PlaylistReference();
             MessageBox.Show("Added to " + TreeExplorer.SelectedNode.Text + " playlist");
@@ -1209,8 +1216,6 @@ namespace ImperialMusicPlayer
         private void VolumeSlider_Scroll(object sender, EventArgs e) {
             wplayer.settings.volume = (int) (VolumeSlider.Value * 10);
         }
-
-
 
         private void TreeExplorer_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e) {
             openPlaylistInNewWindowToolStripMenuItem_Click(sender, e);
