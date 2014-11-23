@@ -192,12 +192,14 @@ namespace ImperialMusicPlayer
         public MusicPlayer()
         {
             InitializeComponent();
+            InitSqlTables();
             InitListViewColumns();
             InitControls();
             InitializeTreeView();
-            InitSqlTables();
             UpdateTree();
             UpdatePlaylistMenuItems();
+
+            InitColumnStatusMenu();
             
            //DropTables();
 
@@ -228,6 +230,17 @@ namespace ImperialMusicPlayer
                 db.SubmitChanges();
             }
             catch (Exception e) {
+                Console.WriteLine(e.Message);
+
+            }
+
+            try
+            {
+                db.ExecuteCommand("CREATE TABLE ColumnStatus (ID int, index_of int, name varchar(30), visible bit, sort_by bit)");
+                db.SubmitChanges();
+            }
+            catch (Exception e)
+            {
                 Console.WriteLine(e.Message);
 
             }
@@ -285,8 +298,15 @@ namespace ImperialMusicPlayer
             try
             {
                 LibraryView.Hide();
-                if (this.TreeExplorer.SelectedNode.Name == "Library" || this.TreeExplorer.SelectedNode.Name == "Playlist") {
-                    foreach (Track track in db.SongLibrary) {
+                if (this.TreeExplorer.SelectedNode.Name == "Library" || this.TreeExplorer.SelectedNode.Name == "Playlist") 
+                {
+                    var libraryTracks = from Track track
+                                        in db.SongLibrary
+                                        orderby track.Title
+                                        select track;
+
+                    foreach (Track track in libraryTracks) 
+                    {
 
                         ListViewItem item = new ListViewItem();
                         item.Text = track.ID.ToString();
@@ -314,7 +334,7 @@ namespace ImperialMusicPlayer
                 }
                 else
                 {
-                    this.LibraryView.Items.Clear();
+                    //this.LibraryView.Items.Clear();
                     var playlistTracks = from Track track
                                          in db.SongLibrary
                                          join reference in db.PlaylistReferences on track.ID equals reference.SongID
@@ -347,6 +367,8 @@ namespace ImperialMusicPlayer
                             LibraryView.Items.Add(item);
                         }
                         Console.WriteLine(this.TreeExplorer.SelectedNode.Text + "\n" + this.TreeExplorer.SelectedNode.Name);
+                        //after for each loop
+                        /*
                         if (LibraryView.Items.Count > 0) {
                             LibraryView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
                         }
@@ -354,11 +376,14 @@ namespace ImperialMusicPlayer
                             LibraryView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
                         }
                         LibraryView.Show();
+                        */
+
                     }
                     catch (Exception err) {
                         Console.WriteLine(err.Message);
                     }
                 }
+                /*
                 if (LibraryView.Items.Count > 0)
                 {
                     LibraryView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
@@ -367,6 +392,15 @@ namespace ImperialMusicPlayer
                 {
                     LibraryView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
                 }
+                */
+
+                UpdateColumns();
+
+                
+
+
+
+
                 LibraryView.Show();
             }
             catch (Exception err)
@@ -383,6 +417,10 @@ namespace ImperialMusicPlayer
         **********************************************************************/
         private void Form1_Load(object sender, EventArgs e)
         {
+
+            //HideLibraryViewColumn(0);
+            //HideLibraryViewColumn(7);
+
             TreeExplorer.SelectedNode = TreeExplorer.Nodes[0];    
             UpdateDisplayToShowLibrary();
         }
@@ -526,7 +564,43 @@ namespace ImperialMusicPlayer
                 LibraryView.Columns.Add("Year");
                 LibraryView.Columns.Add("Comment");
                 LibraryView.Columns.Add("Genre");
-                //LibraryView.Columns.Add("Path");
+                LibraryView.Columns.Add("Path");
+
+                /* ONLY FOR INITIALIZATION OF TABLE 'COLUMNSTATUS'
+                var db_columns = from columnStatus status 
+                                 in db.ColumnStatus
+                                 orderby status.ID
+                                 select status;
+
+                foreach(ColumnHeader item in LibraryView.Columns)
+                {
+                    bool exist = false;
+                    foreach(columnStatus cs in db_columns)
+                    {
+                        if (String.Compare(item.Text, cs.name) == 0)
+                            exist = true;
+                    }
+
+                    if(!exist)
+                    {
+                        //add to db
+                        columnStatus temp = new columnStatus();
+                        temp.ID = item.Index;
+                        temp.index_of = item.Index;
+                        temp.name = item.Text;
+                        temp.sort_by = false;
+                        temp.visible = true;
+
+                        db.ColumnStatus.InsertOnSubmit(temp);
+                    }
+                }
+                db.SubmitChanges();
+
+                var db_columns2 = from columnStatus status
+                                in db.ColumnStatus
+                                 orderby status.ID
+                                 select status;
+                */
             }
             catch (Exception err)
             {
@@ -1097,57 +1171,9 @@ namespace ImperialMusicPlayer
         }
 
         private void TreeExplorer_AfterSelect(object sender, TreeViewEventArgs e) {
-            if (TreeExplorer.SelectedNode != TreeExplorer.Nodes[1] && TreeExplorer.SelectedNode != TreeExplorer.Nodes[0]) {
-                LibraryView.Items.Clear();
-            
-                var playlistTracks = from Track track 
-                                     in db.SongLibrary
-                                     join reference in db.PlaylistReferences on track.ID equals reference.SongID
-                                     where reference.PlaylistID == Convert.ToInt32(TreeExplorer.SelectedNode.Name.ToString()) 
-                                     select track;
-
-                try {
-                    LibraryView.Hide();
-                    foreach (Track track in playlistTracks) {
-
-                        ListViewItem item = new ListViewItem();
-                        item.Text = track.ID.ToString();
-                        item.SubItems.Add(track.Title);
-                        item.SubItems.Add(track.Artist);
-                        item.SubItems.Add(track.Album);
-                        item.SubItems.Add(track.Year);
-                        item.SubItems.Add(track.Comment);
-
-                        if (Convert.ToChar(track.Genre) < trackGenres.Length) {
-                            Console.WriteLine("Genre Index: " + Convert.ToInt32(Convert.ToChar(track.Genre)));
-                            item.SubItems.Add(trackGenres[Convert.ToInt32(Convert.ToChar(track.Genre))]);
-                        }
-                        else {
-                            item.SubItems.Add("Unknown");
-                        }
-
-
-
-                        //item.SubItems.Add(track.Path);
-
-                        LibraryView.Items.Add(item);
-
-                    }
-                    if (LibraryView.Items.Count > 0) {
-                        LibraryView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-                    }
-                    else {
-                        LibraryView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-                    }
-                    LibraryView.Show();
-                }              
-                catch (Exception err) {
-                    Console.WriteLine(err.Message);
-                }
-             }
-             else if (TreeExplorer.SelectedNode == TreeExplorer.Nodes[1] || TreeExplorer.SelectedNode == TreeExplorer.Nodes[0]) {
-                 UpdateDisplayToShowLibrary();
-             }
+            //removed old code as it was the same as 'UpdateDisplayToShowLibrary()
+            //  can recover by rolling backthe file.
+            UpdateDisplayToShowLibrary();
         }
         
         private void addToPlaylistToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -1225,7 +1251,8 @@ namespace ImperialMusicPlayer
            
         }
 
-        private void LibraryView_ItemDrag(object sender, ItemDragEventArgs e) {
+        private void LibraryView_ItemDrag(object sender, ItemDragEventArgs e) 
+        {
             LibraryView.DoDragDrop(LibraryView.SelectedItems[0].Text, DragDropEffects.Copy | DragDropEffects.Move);
         }
 
@@ -1292,6 +1319,151 @@ namespace ImperialMusicPlayer
 
          }
 
+        private void LibraryView_ColumnRightClick(object sender, MouseEventArgs e)
+        {
+            //Console.Write(LibraryView.Columns[e.Column].Text);
+            // check if right click
+           //if (e.Button == MouseButtons.Right)
+            //{
+                HeaderMenu.Show(Cursor.Position);
+            //}
+        }
+
+        private void HideLibraryViewColumn(int index)
+        {
+            //set visible to false in the database for this column
+            // and update columns
+            var updateQuery =
+                from status in db.ColumnStatus
+                where status.index_of == index
+                select status;
+
+            foreach (columnStatus status in updateQuery)
+            {
+                status.visible = false;
+            }
+
+            try
+            {
+                db.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            UpdateColumns();
+        }
+
+        private void ShowLibraryViewColumn(int index)
+        {
+            //set visible = true and update columns
+            //set visible to false in the database for this column
+            var updateQuery =
+                from status in db.ColumnStatus
+                where status.index_of == index
+                select status;
+
+            foreach (columnStatus status in updateQuery)
+            {
+                status.visible = true;
+            }
+
+            try
+            {
+                db.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            UpdateColumns();
+
+        }
+
+        private void LibraryView_ColumnWidthChanged(object sender, ColumnWidthChangedEventArgs e)
+        {
+           // Console.WriteLine(sender.ToString());
+           // Console.WriteLine(e.ToString());
+
+        }
+
+        private void viewToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            //toggle checked state
+            ((ToolStripMenuItem)e.ClickedItem).Checked = !((ToolStripMenuItem)e.ClickedItem).Checked;
+
+            //update database
+            int index = 8;
+            foreach(ColumnHeader column in LibraryView.Columns)
+            {
+                if(column.Text == ((ToolStripMenuItem)e.ClickedItem).Text )
+                {
+                    index = column.Index;
+                }
+            }
+
+            if(((ToolStripMenuItem)e.ClickedItem).Checked)
+            {
+                ShowLibraryViewColumn(index);
+            }
+            else
+            {
+                HideLibraryViewColumn(index);
+            }
+
+            
+        }
+
+        private void ViewMenuItem_CheckedStateChanged(object sender, EventArgs e)
+        {
+            //based on check state, show or hide column
+            Console.WriteLine(sender.ToString());
+            Console.WriteLine(e.ToString());
+        }
+
+        private void UpdateColumns()
+        {
+            var columns = from columnStatus status
+                              in db.ColumnStatus
+                          select status;
+
+            LibraryView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+
+            foreach(columnStatus status in columns)
+            {
+                if(!status.visible)
+                {
+                    LibraryView.Columns[status.index_of].Width = 0;
+                }
+            }
+        }
+
+        private void LibraryView_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            System.Windows.Forms.MouseButtons b = new System.Windows.Forms.MouseButtons();
+            MouseEventArgs ev = new MouseEventArgs(b,1,Cursor.Position.X,Cursor.Position.Y,0);
+            LibraryView_ColumnRightClick(sender, ev);
+        }
+        
+        private void InitColumnStatusMenu()
+        {
+            var columns = from columnStatus status
+                             in db.ColumnStatus
+                          select status;
+
+            foreach (columnStatus status in columns)
+            {   
+                foreach(ToolStripMenuItem tsmi in viewToolStripMenuItem.DropDownItems)
+                {
+                    if (status.name == tsmi.Text && status.visible)
+                        tsmi.Checked = true;
+                    else if (status.name == tsmi.Text && !status.visible)
+                        tsmi.Checked = false;
+                }
+            }
+        }
 
         
     }

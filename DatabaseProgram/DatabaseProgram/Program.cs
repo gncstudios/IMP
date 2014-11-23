@@ -73,6 +73,22 @@ namespace ImperialMusicPlayer
         public string Genre;
 
     }
+    
+    [Table(Name= "ColumnStatus")]
+    public class columnStatus
+    {
+        [Column(IsPrimaryKey = true)]
+        public int ID;
+        [Column]
+        public int index_of;
+        [Column]
+        public string name;
+        [Column]
+        public Boolean visible;
+        [Column]
+        public Boolean sort_by;
+    }
+
     class MyDatabase : DataContext
     {
         //private const String LoginString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=\"C:\\Users\\eblain\\documents\\CECS 343\\Semester Project\\IMP\\DatabaseProgram\\DatabaseProgram\\SongLibrary.mdf\";Integrated Security=True";
@@ -83,6 +99,7 @@ namespace ImperialMusicPlayer
         public Table<Track> SongLibrary;
         public Table<Playlist> PlaylistLibrary;
         public Table<PlaylistReference> PlaylistReferences;
+        public Table<columnStatus> ColumnStatus;
         public MyDatabase()
             : base(LoginString)
         {

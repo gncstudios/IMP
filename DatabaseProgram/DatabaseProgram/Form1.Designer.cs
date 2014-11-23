@@ -1,4 +1,5 @@
-﻿namespace ImperialMusicPlayer
+﻿using System;
+namespace ImperialMusicPlayer
 {
     /// <summary>
     /// Mucis Player Class. Defines the MusicPlayer</summary>
@@ -77,9 +78,16 @@
             this.playPlaylistToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openPlaylistInNewWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deletePlaylistToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.LibraryView = new System.Windows.Forms.ListView();
+            this.LibraryView = new ImperialMusicPlayer.SongView();
             this.VolumeSlider = new System.Windows.Forms.TrackBar();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.HeaderMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.artistToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.albumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.yearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.commentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.genreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.TrackMenu.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -88,6 +96,7 @@
             this.PlaylistRightClick.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.VolumeSlider)).BeginInit();
             this.groupBox4.SuspendLayout();
+            this.HeaderMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // label3
@@ -556,9 +565,12 @@
             this.LibraryView.Name = "LibraryView";
             this.LibraryView.RightToLeftLayout = true;
             this.LibraryView.Size = new System.Drawing.Size(971, 595);
+            this.LibraryView.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.LibraryView.TabIndex = 3;
             this.LibraryView.UseCompatibleStateImageBehavior = false;
             this.LibraryView.View = System.Windows.Forms.View.List;
+            //this.LibraryView.MouseColumnClick += new System.Windows.Forms.MouseEventHandler(this.LibraryView_ColumnRightClick);
+            this.LibraryView.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.LibraryView_ColumnClick);
             this.LibraryView.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.LibraryView_ItemDrag);
             this.LibraryView.SelectedIndexChanged += new System.EventHandler(this.LibraryView_SelectedIndexChanged);
             this.LibraryView.DragDrop += new System.Windows.Forms.DragEventHandler(this.LibraryView_DragDrop);
@@ -588,6 +600,56 @@
             this.groupBox4.TabIndex = 24;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Volume";
+            // 
+            // HeaderMenu
+            // 
+            this.HeaderMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.viewToolStripMenuItem});
+            this.HeaderMenu.Name = "HeaderRightClick";
+            this.HeaderMenu.Size = new System.Drawing.Size(100, 26);
+            // 
+            // viewToolStripMenuItem
+            // 
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.artistToolStripMenuItem,
+            this.albumToolStripMenuItem,
+            this.yearToolStripMenuItem,
+            this.commentToolStripMenuItem,
+            this.genreToolStripMenuItem});
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
+            this.viewToolStripMenuItem.Text = "View";
+            this.viewToolStripMenuItem.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.viewToolStripMenuItem_DropDownItemClicked);
+            // 
+            // artistToolStripMenuItem
+            // 
+            this.artistToolStripMenuItem.Name = "artistToolStripMenuItem";
+            this.artistToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.artistToolStripMenuItem.Text = "Artist";
+            // 
+            // albumToolStripMenuItem
+            // 
+            this.albumToolStripMenuItem.Name = "albumToolStripMenuItem";
+            this.albumToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.albumToolStripMenuItem.Text = "Album";
+            // 
+            // yearToolStripMenuItem
+            // 
+            this.yearToolStripMenuItem.Name = "yearToolStripMenuItem";
+            this.yearToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.yearToolStripMenuItem.Text = "Year";
+            // 
+            // commentToolStripMenuItem
+            // 
+            this.commentToolStripMenuItem.Name = "commentToolStripMenuItem";
+            this.commentToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.commentToolStripMenuItem.Text = "Comment";
+            // 
+            // genreToolStripMenuItem
+            // 
+            this.genreToolStripMenuItem.Name = "genreToolStripMenuItem";
+            this.genreToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.genreToolStripMenuItem.Text = "Genre";
             // 
             // MusicPlayer
             // 
@@ -623,6 +685,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.VolumeSlider)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            this.HeaderMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -672,9 +735,30 @@
         private System.Windows.Forms.ToolStripMenuItem deletePlaylistToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addToPlaylistToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clearAllPlaylistsToolStripMenuItem;
-        private System.Windows.Forms.ListView LibraryView;
+        private SongView LibraryView;
         private System.Windows.Forms.TrackBar VolumeSlider;
         private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.ContextMenuStrip HeaderMenu;
+        private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem artistToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem albumToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem yearToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem commentToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem genreToolStripMenuItem;
+    }
+
+    public class SongView : System.Windows.Forms.ListView
+    {/*
+        //declare actual event
+        public event System.Windows.Forms.MouseEventHandler MouseColumnClick;
+
+        //define event listener
+        protected virtual void OnClick(System.Windows.Forms.MouseEventArgs e)
+        {
+            if (base.ColumnClick != null)
+                MouseColumnClick(this, e);
+        }
+      */
     }
 }
 
