@@ -326,7 +326,7 @@ namespace ImperialMusicPlayer
 
 
 
-                        //item.SubItems.Add(track.Path);
+                        item.SubItems.Add(track.Path);
 
                         this.LibraryView.Items.Add(item);
 
@@ -686,6 +686,7 @@ namespace ImperialMusicPlayer
         **********************************************************************/
         private void PlayButton_Click(object sender, EventArgs e)
         {
+            Console.WriteLine(Convert.ToInt32(LibraryView.FocusedItem.SubItems[0].Text));
             try
             {
                 if (LibraryView.FocusedItem != null)
@@ -693,6 +694,8 @@ namespace ImperialMusicPlayer
                     if ((wplayer.URL.Length) == 0)
                     {
                         wplayer.URL = LibraryView.FocusedItem.SubItems[7].Text;
+                        
+                        
                         currentTrackPosition = 0.00;
                         wplayer.controls.currentPosition = currentTrackPosition;
                     }
@@ -1319,6 +1322,7 @@ namespace ImperialMusicPlayer
 
          }
 
+        
         private void LibraryView_ColumnRightClick(object sender, MouseEventArgs e)
         {
             //Console.Write(LibraryView.Columns[e.Column].Text);
@@ -1465,6 +1469,5 @@ namespace ImperialMusicPlayer
             }
         }
 
-        
     }
 }
