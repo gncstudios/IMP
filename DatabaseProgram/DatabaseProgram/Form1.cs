@@ -1245,7 +1245,7 @@ namespace ImperialMusicPlayer
         }
 
         private void VolumeSlider_Scroll(object sender, EventArgs e) {
-            wplayer.settings.volume = (int) (VolumeSlider.Value * 10);
+            wplayer.settings.volume = (int) (VolumeSlider.Value * 5);
         }
 
         private void TreeExplorer_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e) {
@@ -1488,6 +1488,157 @@ namespace ImperialMusicPlayer
                 durationTimer.Text = String.Format("{0:D2}:{1:D2}", timeLeft.Minutes, timeLeft.Seconds); //Convert.ToString(timeLeft);
 
             }
+        }
+
+        private void MusicPlayer_KeyDown(object sender, KeyEventArgs e)
+        {
+            //switch case to decide on action based on input
+            Console.WriteLine(e.KeyCode);
+            Console.WriteLine(e.KeyData);
+
+
+            if (e.Control)
+            {
+                switch (e.KeyCode)
+                {
+                    //ctrl+right arrow
+                    case Keys.Right:
+                        Next();
+                        break;
+
+                    //ctrl+left arrow
+                    case Keys.Left:
+                        Previous();
+                        break;
+
+                    //ctrl+L
+                    case Keys.L:
+                        break;
+
+                    //ctrl+I
+                    case Keys.I:
+                        IncreaseVolume();
+                        break;
+
+                    //ctrl+D
+                    case Keys.D:
+                        DecreaseVolume();
+                        break;
+                }
+            }
+            else
+            {
+                if (e.KeyCode == Keys.Space)
+                {
+                    Play();
+                }
+            }
+        }
+
+        private void Play()
+        {
+            Console.WriteLine(Convert.ToInt32(LibraryView.FocusedItem.SubItems[0].Text));
+            try
+            {
+                if (LibraryView.FocusedItem != null)
+                {
+                    if ((wplayer.URL.Length) == 0)
+                    {
+                        wplayer.URL = LibraryView.FocusedItem.SubItems[7].Text;
+
+
+                        currentTrackPosition = 0.00;
+                        wplayer.controls.currentPosition = currentTrackPosition;
+                    }
+                    else if (wplayer.URL != LibraryView.FocusedItem.SubItems[7].Text)
+                    {
+                        wplayer.URL = LibraryView.FocusedItem.SubItems[7].Text;
+                    }
+                    wplayer.controls.play();
+                    UpdateDisplay();
+
+                }
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(err.Message);
+            }
+        }
+
+        private void Next()
+        {
+            try
+            {
+                if (LibraryView.FocusedItem.Index < LibraryView.Items.Count - 1)
+                {
+                    int selectedIndex = LibraryView.SelectedIndices[0];
+                    selectedIndex++;
+                    LibraryView.Items[selectedIndex - 1].Selected = false;
+                    LibraryView.Items[selectedIndex - 1].Focused = false;
+                    LibraryView.Items[selectedIndex].Focused = true;
+                    LibraryView.Items[selectedIndex].Selected = true;
+                    wplayer.URL = "";
+                    wplayer.URL = LibraryView.FocusedItem.SubItems[7].Text;
+                    Console.WriteLine("Playing Next Song # " + LibraryView.FocusedItem.Index + " " + LibraryView.FocusedItem.SubItems[7].Text);
+                    wplayer.controls.play();
+                    UpdateDisplay();
+                }
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(err.Message);
+            }
+        }
+
+        private void Previous()
+        {
+            try
+            {
+                if (LibraryView.FocusedItem.Index > 0)
+                {
+                    int selectedIndex = LibraryView.SelectedIndices[0];
+                    selectedIndex--;
+                    LibraryView.Items[selectedIndex + 1].Selected = false;
+                    LibraryView.Items[selectedIndex + 1].Focused = false;
+                    LibraryView.Items[selectedIndex].Focused = true;
+                    LibraryView.Items[selectedIndex].Selected = true;
+                    wplayer.URL = "";
+                    wplayer.URL = LibraryView.FocusedItem.SubItems[7].Text;
+                    Console.WriteLine("Playing Previous Song # " + LibraryView.FocusedItem.Index + " " + LibraryView.FocusedItem.SubItems[7].Text);
+                    wplayer.controls.play();
+                    UpdateDisplay();
+                }
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(err.Message);
+            }
+        }
+
+        private void IncreaseVolume()
+        {
+            if (VolumeSlider.Value != VolumeSlider.Maximum)
+                VolumeSlider.Value = VolumeSlider.Value + VolumeSlider.SmallChange;
+
+            wplayer.settings.volume = (int)(VolumeSlider.Value * 5);
+        }
+
+        private void DecreaseVolume()
+        {
+            if (VolumeSlider.Value != VolumeSlider.Minimum)
+                VolumeSlider.Value = VolumeSlider.Value - VolumeSlider.SmallChange;
+
+            wplayer.settings.volume = (int)(VolumeSlider.Value * 5);
+        }
+
+        private void increaseVolumeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            IncreaseVolume();
+        }
+
+        private void decreaseVolumeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DecreaseVolume();
         }
 
     }

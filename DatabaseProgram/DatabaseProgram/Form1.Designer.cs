@@ -607,6 +607,7 @@ namespace ImperialMusicPlayer
             this.VolumeSlider.AccessibleDescription = "Volume";
             this.VolumeSlider.Cursor = System.Windows.Forms.Cursors.NoMoveHoriz;
             this.VolumeSlider.Location = new System.Drawing.Point(6, 18);
+            this.VolumeSlider.Maximum = 20;
             this.VolumeSlider.Name = "VolumeSlider";
             this.VolumeSlider.Size = new System.Drawing.Size(159, 45);
             this.VolumeSlider.TabIndex = 27;
@@ -734,6 +735,7 @@ namespace ImperialMusicPlayer
             this.LibraryView.DragDrop += new System.Windows.Forms.DragEventHandler(this.LibraryView_DragDrop);
             this.LibraryView.DragEnter += new System.Windows.Forms.DragEventHandler(this.LibraryView_DragEnter);
             this.LibraryView.DragLeave += new System.EventHandler(this.LibraryView_DragLeave);
+            this.LibraryView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MusicPlayer_KeyDown);
             this.LibraryView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.LibraryView_MouseClick);
             this.LibraryView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.LibraryView_MouseDoubleClick);
             // 
@@ -763,6 +765,7 @@ namespace ImperialMusicPlayer
             this.Name = "MusicPlayer";
             this.Text = ";";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MusicPlayer_KeyDown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.TrackMenu.ResumeLayout(false);
