@@ -704,6 +704,7 @@ namespace ImperialMusicPlayer
                         wplayer.URL = LibraryView.FocusedItem.SubItems[7].Text;
                     }
                     wplayer.controls.play();
+                    timer1.Start();
                     UpdateDisplay();
                    
                 }
@@ -731,6 +732,7 @@ namespace ImperialMusicPlayer
                 wplayer.controls.stop();
                 CurrentSong.Clear();
                 CurrentSong.AppendText("\nImperial Music Player");
+                timer1.Stop();
             }
             catch (Exception err)
             {
@@ -1466,6 +1468,25 @@ namespace ImperialMusicPlayer
                     else if (status.name == tsmi.Text && !status.visible)
                         tsmi.Checked = false;
                 }
+            }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            double time = 0;
+            double duration = 0;
+            if (wplayer.playState == WMPPlayState.wmppsPlaying)
+            {
+                duration = wplayer.controls.currentItem.duration;
+                progressBar.Maximum = (int)duration;
+                progressBar.Value = (int)wplayer.controls.currentPosition;
+                TimeSpan currTime = TimeSpan.FromSeconds(wplayer.controls.currentPosition);
+                currentPositionTimer.Text = String.Format("{0:D2}:{1:D2}", currTime.Minutes, currTime.Seconds);//wplayer.controls.currentPositionString;
+
+                time = wplayer.controls.currentItem.duration - wplayer.controls.currentPosition;
+                System.TimeSpan timeLeft = TimeSpan.FromSeconds(time);
+                durationTimer.Text = String.Format("{0:D2}:{1:D2}", timeLeft.Minutes, timeLeft.Seconds); //Convert.ToString(timeLeft);
+
             }
         }
 

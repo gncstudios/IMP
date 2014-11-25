@@ -56,6 +56,12 @@ namespace ImperialMusicPlayer
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutTheImerialMusicPlayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.controlsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.playToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.nextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.previousToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.playRecentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.goToCurrentSongToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SongAdd = new System.Windows.Forms.Button();
             this.SongBrowse = new System.Windows.Forms.OpenFileDialog();
             this.TrackMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -78,7 +84,6 @@ namespace ImperialMusicPlayer
             this.playPlaylistToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openPlaylistInNewWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deletePlaylistToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.LibraryView = new ImperialMusicPlayer.SongView();
             this.VolumeSlider = new System.Windows.Forms.TrackBar();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.HeaderMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -88,12 +93,11 @@ namespace ImperialMusicPlayer
             this.yearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.commentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.genreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.controlsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.playToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.nextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.previousToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.playRecentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.goToCurrentSongToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.durationTimer = new System.Windows.Forms.Label();
+            this.currentPositionTimer = new System.Windows.Forms.Label();
+            this.LibraryView = new ImperialMusicPlayer.SongView();
             this.menuStrip1.SuspendLayout();
             this.TrackMenu.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -332,6 +336,51 @@ namespace ImperialMusicPlayer
             this.aboutTheImerialMusicPlayerToolStripMenuItem.Text = "About Imperial Music Player V1.0";
             this.aboutTheImerialMusicPlayerToolStripMenuItem.Click += new System.EventHandler(this.aboutTheImerialMusicPlayerToolStripMenuItem_Click);
             // 
+            // controlsToolStripMenuItem
+            // 
+            this.controlsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.playToolStripMenuItem,
+            this.nextToolStripMenuItem,
+            this.previousToolStripMenuItem,
+            this.playRecentToolStripMenuItem,
+            this.goToCurrentSongToolStripMenuItem});
+            this.controlsToolStripMenuItem.Name = "controlsToolStripMenuItem";
+            this.controlsToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
+            this.controlsToolStripMenuItem.Text = "Controls";
+            // 
+            // playToolStripMenuItem
+            // 
+            this.playToolStripMenuItem.Name = "playToolStripMenuItem";
+            this.playToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.playToolStripMenuItem.Text = "Play";
+            this.playToolStripMenuItem.Click += new System.EventHandler(this.PlayButton_Click);
+            // 
+            // nextToolStripMenuItem
+            // 
+            this.nextToolStripMenuItem.Name = "nextToolStripMenuItem";
+            this.nextToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.nextToolStripMenuItem.Text = "Next";
+            this.nextToolStripMenuItem.Click += new System.EventHandler(this.NextButton_Click_1);
+            // 
+            // previousToolStripMenuItem
+            // 
+            this.previousToolStripMenuItem.Name = "previousToolStripMenuItem";
+            this.previousToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.previousToolStripMenuItem.Text = "Previous";
+            this.previousToolStripMenuItem.Click += new System.EventHandler(this.PreviousButton_Click);
+            // 
+            // playRecentToolStripMenuItem
+            // 
+            this.playRecentToolStripMenuItem.Name = "playRecentToolStripMenuItem";
+            this.playRecentToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.playRecentToolStripMenuItem.Text = "Play Recent";
+            // 
+            // goToCurrentSongToolStripMenuItem
+            // 
+            this.goToCurrentSongToolStripMenuItem.Name = "goToCurrentSongToolStripMenuItem";
+            this.goToCurrentSongToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.goToCurrentSongToolStripMenuItem.Text = "Go to Current Song";
+            // 
             // SongAdd
             // 
             this.SongAdd.BackColor = System.Drawing.Color.Transparent;
@@ -513,9 +562,9 @@ namespace ImperialMusicPlayer
             this.TreeExplorer.HideSelection = false;
             this.TreeExplorer.LabelEdit = true;
             this.TreeExplorer.LineColor = System.Drawing.Color.White;
-            this.TreeExplorer.Location = new System.Drawing.Point(0, 125);
+            this.TreeExplorer.Location = new System.Drawing.Point(0, 142);
             this.TreeExplorer.Name = "TreeExplorer";
-            this.TreeExplorer.Size = new System.Drawing.Size(177, 572);
+            this.TreeExplorer.Size = new System.Drawing.Size(177, 555);
             this.TreeExplorer.TabIndex = 25;
             this.TreeExplorer.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeExplorer_AfterSelect);
             this.TreeExplorer.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.TreeExplorer_NodeMouseDoubleClick);
@@ -553,38 +602,6 @@ namespace ImperialMusicPlayer
             this.deletePlaylistToolStripMenuItem.Text = "Delete Playlist";
             this.deletePlaylistToolStripMenuItem.Click += new System.EventHandler(this.deletePlaylistToolStripMenuItem_Click);
             // 
-            // LibraryView
-            // 
-            this.LibraryView.AllowColumnReorder = true;
-            this.LibraryView.AllowDrop = true;
-            this.LibraryView.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(89)))), ((int)(((byte)(89)))), ((int)(((byte)(89)))));
-            this.LibraryView.BackgroundImage = global::ImperialMusicPlayer.Properties.Resources.ImperialMusicPlayerLibraryBackground;
-            this.LibraryView.BackgroundImageTiled = true;
-            this.LibraryView.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.LibraryView.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.LibraryView.Font = new System.Drawing.Font("Calibri", 10F);
-            this.LibraryView.ForeColor = System.Drawing.Color.White;
-            this.LibraryView.FullRowSelect = true;
-            this.LibraryView.HideSelection = false;
-            this.LibraryView.Location = new System.Drawing.Point(184, 102);
-            this.LibraryView.Margin = new System.Windows.Forms.Padding(4);
-            this.LibraryView.MinimumSize = new System.Drawing.Size(800, 400);
-            this.LibraryView.Name = "LibraryView";
-            this.LibraryView.RightToLeftLayout = true;
-            this.LibraryView.Size = new System.Drawing.Size(971, 595);
-            this.LibraryView.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            this.LibraryView.TabIndex = 3;
-            this.LibraryView.UseCompatibleStateImageBehavior = false;
-            this.LibraryView.View = System.Windows.Forms.View.List;
-            this.LibraryView.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.LibraryView_ColumnClick);
-            this.LibraryView.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.LibraryView_ItemDrag);
-            this.LibraryView.SelectedIndexChanged += new System.EventHandler(this.LibraryView_SelectedIndexChanged);
-            this.LibraryView.DragDrop += new System.Windows.Forms.DragEventHandler(this.LibraryView_DragDrop);
-            this.LibraryView.DragEnter += new System.Windows.Forms.DragEventHandler(this.LibraryView_DragEnter);
-            this.LibraryView.DragLeave += new System.EventHandler(this.LibraryView_DragLeave);
-            this.LibraryView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.LibraryView_MouseClick);
-            this.LibraryView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.LibraryView_MouseDoubleClick);
-            // 
             // VolumeSlider
             // 
             this.VolumeSlider.AccessibleDescription = "Volume";
@@ -600,9 +617,9 @@ namespace ImperialMusicPlayer
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.VolumeSlider);
-            this.groupBox4.Location = new System.Drawing.Point(12, 27);
+            this.groupBox4.Location = new System.Drawing.Point(12, 25);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(172, 72);
+            this.groupBox4.Size = new System.Drawing.Size(166, 72);
             this.groupBox4.TabIndex = 24;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Volume";
@@ -657,50 +674,68 @@ namespace ImperialMusicPlayer
             this.genreToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.genreToolStripMenuItem.Text = "Genre";
             // 
-            // controlsToolStripMenuItem
+            // progressBar
             // 
-            this.controlsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.playToolStripMenuItem,
-            this.nextToolStripMenuItem,
-            this.previousToolStripMenuItem,
-            this.playRecentToolStripMenuItem,
-            this.goToCurrentSongToolStripMenuItem});
-            this.controlsToolStripMenuItem.Name = "controlsToolStripMenuItem";
-            this.controlsToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
-            this.controlsToolStripMenuItem.Text = "Controls";
+            this.progressBar.Location = new System.Drawing.Point(184, 108);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(291, 10);
+            this.progressBar.TabIndex = 27;
             // 
-            // playToolStripMenuItem
+            // timer1
             // 
-            this.playToolStripMenuItem.Name = "playToolStripMenuItem";
-            this.playToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.playToolStripMenuItem.Text = "Play";
-            this.playToolStripMenuItem.Click += new System.EventHandler(this.PlayButton_Click);
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // nextToolStripMenuItem
+            // durationTimer
             // 
-            this.nextToolStripMenuItem.Name = "nextToolStripMenuItem";
-            this.nextToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.nextToolStripMenuItem.Text = "Next";
-            this.nextToolStripMenuItem.Click += new System.EventHandler(this.NextButton_Click_1);
+            this.durationTimer.AutoSize = true;
+            this.durationTimer.ForeColor = System.Drawing.Color.Black;
+            this.durationTimer.Location = new System.Drawing.Point(481, 99);
+            this.durationTimer.Name = "durationTimer";
+            this.durationTimer.Size = new System.Drawing.Size(37, 19);
+            this.durationTimer.TabIndex = 28;
+            this.durationTimer.Text = "0:00";
             // 
-            // previousToolStripMenuItem
+            // currentPositionTimer
             // 
-            this.previousToolStripMenuItem.Name = "previousToolStripMenuItem";
-            this.previousToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.previousToolStripMenuItem.Text = "Previous";
-            this.previousToolStripMenuItem.Click += new System.EventHandler(this.PreviousButton_Click);
+            this.currentPositionTimer.AutoSize = true;
+            this.currentPositionTimer.ForeColor = System.Drawing.Color.Black;
+            this.currentPositionTimer.Location = new System.Drawing.Point(140, 104);
+            this.currentPositionTimer.Name = "currentPositionTimer";
+            this.currentPositionTimer.Size = new System.Drawing.Size(37, 19);
+            this.currentPositionTimer.TabIndex = 29;
+            this.currentPositionTimer.Text = "0:00";
             // 
-            // playRecentToolStripMenuItem
+            // LibraryView
             // 
-            this.playRecentToolStripMenuItem.Name = "playRecentToolStripMenuItem";
-            this.playRecentToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.playRecentToolStripMenuItem.Text = "Play Recent";
-            // 
-            // goToCurrentSongToolStripMenuItem
-            // 
-            this.goToCurrentSongToolStripMenuItem.Name = "goToCurrentSongToolStripMenuItem";
-            this.goToCurrentSongToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.goToCurrentSongToolStripMenuItem.Text = "Go to Current Song";
+            this.LibraryView.AllowColumnReorder = true;
+            this.LibraryView.AllowDrop = true;
+            this.LibraryView.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(89)))), ((int)(((byte)(89)))), ((int)(((byte)(89)))));
+            this.LibraryView.BackgroundImage = global::ImperialMusicPlayer.Properties.Resources.ImperialMusicPlayerLibraryBackground;
+            this.LibraryView.BackgroundImageTiled = true;
+            this.LibraryView.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.LibraryView.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.LibraryView.Font = new System.Drawing.Font("Calibri", 10F);
+            this.LibraryView.ForeColor = System.Drawing.Color.White;
+            this.LibraryView.FullRowSelect = true;
+            this.LibraryView.HideSelection = false;
+            this.LibraryView.Location = new System.Drawing.Point(184, 125);
+            this.LibraryView.Margin = new System.Windows.Forms.Padding(4);
+            this.LibraryView.MinimumSize = new System.Drawing.Size(800, 400);
+            this.LibraryView.Name = "LibraryView";
+            this.LibraryView.RightToLeftLayout = true;
+            this.LibraryView.Size = new System.Drawing.Size(971, 572);
+            this.LibraryView.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            this.LibraryView.TabIndex = 3;
+            this.LibraryView.UseCompatibleStateImageBehavior = false;
+            this.LibraryView.View = System.Windows.Forms.View.List;
+            this.LibraryView.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.LibraryView_ColumnClick);
+            this.LibraryView.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.LibraryView_ItemDrag);
+            this.LibraryView.SelectedIndexChanged += new System.EventHandler(this.LibraryView_SelectedIndexChanged);
+            this.LibraryView.DragDrop += new System.Windows.Forms.DragEventHandler(this.LibraryView_DragDrop);
+            this.LibraryView.DragEnter += new System.Windows.Forms.DragEventHandler(this.LibraryView_DragEnter);
+            this.LibraryView.DragLeave += new System.EventHandler(this.LibraryView_DragLeave);
+            this.LibraryView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.LibraryView_MouseClick);
+            this.LibraryView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.LibraryView_MouseDoubleClick);
             // 
             // MusicPlayer
             // 
@@ -710,6 +745,9 @@ namespace ImperialMusicPlayer
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1168, 632);
+            this.Controls.Add(this.currentPositionTimer);
+            this.Controls.Add(this.durationTimer);
+            this.Controls.Add(this.progressBar);
             this.Controls.Add(this.TreeExplorer);
             this.Controls.Add(this.LibraryView);
             this.Controls.Add(this.menuStrip1);
@@ -802,6 +840,10 @@ namespace ImperialMusicPlayer
         private System.Windows.Forms.ToolStripMenuItem previousToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem playRecentToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem goToCurrentSongToolStripMenuItem;
+        private System.Windows.Forms.ProgressBar progressBar;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Label durationTimer;
+        private System.Windows.Forms.Label currentPositionTimer;
     }
 
     public class SongView : System.Windows.Forms.ListView
