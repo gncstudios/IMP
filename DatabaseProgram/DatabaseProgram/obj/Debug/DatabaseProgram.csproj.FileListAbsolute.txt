@@ -30,3 +30,9 @@ C:\Users\eblain\Documents\CECS 343\Semester Project\IMP\DatabaseProgram\Database
 C:\Users\eblain\Documents\CECS 343\Semester Project\IMP\DatabaseProgram\DatabaseProgram\obj\Debug\DatabaseProgram.pdb
 C:\Users\eblain\Documents\CECS 343\Semester Project\IMP\DatabaseProgram\DatabaseProgram\bin\Debug\SongLibrary.mdf
 C:\Users\eblain\Documents\CECS 343\Semester Project\IMP\DatabaseProgram\DatabaseProgram\bin\Debug\SongLibrary_log.ldf
+C:\Users\PaulEdward\Documents\IMP\DatabaseProgram\DatabaseProgram\bin\Debug\DatabaseProgram.exe.config
+C:\Users\PaulEdward\Documents\IMP\DatabaseProgram\DatabaseProgram\obj\Debug\Interop.MediaPlayer.dll
+C:\Users\PaulEdward\Documents\IMP\DatabaseProgram\DatabaseProgram\obj\Debug\Interop.WMPLib.dll
+C:\Users\PaulEdward\Documents\IMP\DatabaseProgram\DatabaseProgram\obj\Debug\DatabaseProgram.csproj.ResolveComReference.cache
+C:\Users\PaulEdward\Documents\IMP\DatabaseProgram\DatabaseProgram\obj\Debug\DatabaseProgram.exe
+C:\Users\PaulEdward\Documents\IMP\DatabaseProgram\DatabaseProgram\obj\Debug\DatabaseProgram.pdb
