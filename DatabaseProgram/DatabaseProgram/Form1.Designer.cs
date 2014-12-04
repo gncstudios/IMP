@@ -97,7 +97,7 @@ namespace ImperialMusicPlayer
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.durationTimer = new System.Windows.Forms.Label();
             this.currentPositionTimer = new System.Windows.Forms.Label();
-            this.LibraryView = new ImperialMusicPlayer.SongView();
+            this.LibraryView = new System.Windows.Forms.ListView();
             this.menuStrip1.SuspendLayout();
             this.TrackMenu.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -374,12 +374,16 @@ namespace ImperialMusicPlayer
             this.playRecentToolStripMenuItem.Name = "playRecentToolStripMenuItem";
             this.playRecentToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.playRecentToolStripMenuItem.Text = "Play Recent";
+            this.playRecentToolStripMenuItem.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.playRecentToolStripMenuItem_DropDownItemClicked);
+            this.playRecentToolStripMenuItem.Click += new System.EventHandler(this.playRecentToolStripMenuItem_Click);
+            this.playRecentToolStripMenuItem.MouseHover += new System.EventHandler(this.playRecentToolStripMenuItem_MouseHover);
             // 
             // goToCurrentSongToolStripMenuItem
             // 
             this.goToCurrentSongToolStripMenuItem.Name = "goToCurrentSongToolStripMenuItem";
             this.goToCurrentSongToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.goToCurrentSongToolStripMenuItem.Text = "Go to Current Song";
+            this.goToCurrentSongToolStripMenuItem.Click += new System.EventHandler(this.goToCurrentSongToolStripMenuItem_Click);
             // 
             // SongAdd
             // 
@@ -681,6 +685,7 @@ namespace ImperialMusicPlayer
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(291, 10);
             this.progressBar.TabIndex = 27;
+            this.progressBar.MouseClick += new System.Windows.Forms.MouseEventHandler(this.progressBar_MouseClick);
             // 
             // timer1
             // 
@@ -763,7 +768,7 @@ namespace ImperialMusicPlayer
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MinimumSize = new System.Drawing.Size(1000, 600);
             this.Name = "MusicPlayer";
-            this.Text = ";";
+            this.Text = "Imperial Music Player";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MusicPlayer_KeyDown);
             this.menuStrip1.ResumeLayout(false);
@@ -827,7 +832,6 @@ namespace ImperialMusicPlayer
         private System.Windows.Forms.ToolStripMenuItem deletePlaylistToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addToPlaylistToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clearAllPlaylistsToolStripMenuItem;
-        private SongView LibraryView;
         private System.Windows.Forms.TrackBar VolumeSlider;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.ContextMenuStrip HeaderMenu;
@@ -847,6 +851,7 @@ namespace ImperialMusicPlayer
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label durationTimer;
         private System.Windows.Forms.Label currentPositionTimer;
+        private System.Windows.Forms.ListView LibraryView;
     }
 
     public class SongView : System.Windows.Forms.ListView

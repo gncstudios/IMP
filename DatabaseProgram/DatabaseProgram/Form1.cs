@@ -39,6 +39,7 @@ namespace ImperialMusicPlayer
         
         WMPLib.WindowsMediaPlayer wplayer = new WMPLib.WindowsMediaPlayer();
         double currentTrackPosition = 0;
+        int[] recentlyPlayed = new int[10];
         string[] trackGenres = {
             "Blues",
             "Classic Rock",
@@ -210,7 +211,7 @@ namespace ImperialMusicPlayer
         ///////////////////////////////////////////////////////////////////////
         public void InitSqlTables() {
             try {
-                db.ExecuteCommand("CREATE TABLE SongLibrary (ID int, Path varchar(512), Genre varchar(4), Title varchar(30), Year varchar(4), Artist varchar(30), Album varchar(30), Comment varchar(30))");
+                db.ExecuteCommand("CREATE TABLE SongLibrary (ID int, Path varchar(512), Genre varchar(4), Title varchar(30), Year varchar(4), Artist varchar(30), Album varchar(30), Comment varchar(30), PlayRecent int)");
                 db.SubmitChanges();
             }
             catch (Exception e) {
@@ -300,10 +301,13 @@ namespace ImperialMusicPlayer
                 LibraryView.Hide();
                 if (this.TreeExplorer.SelectedNode.Name == "Library" || this.TreeExplorer.SelectedNode.Name == "Playlist") 
                 {
-                    var libraryTracks = from Track track
-                                        in db.SongLibrary
+                    /*
+                    var libraryTracks = from track in db.SongLibrary
                                         orderby track.Title
                                         select track;
+                     */
+                    var libraryTracks = from songs in db.SongLibrary
+                                        select songs;
 
                     foreach (Track track in libraryTracks) 
                     {
@@ -343,7 +347,8 @@ namespace ImperialMusicPlayer
 
                     try {
                         this.LibraryView.Hide();
-                        foreach (Track track in playlistTracks) {
+                        foreach (Track track in playlistTracks) 
+                        {
 
                             ListViewItem item = new ListViewItem();
                             item.Text = track.ID.ToString();
@@ -686,34 +691,7 @@ namespace ImperialMusicPlayer
         **********************************************************************/
         private void PlayButton_Click(object sender, EventArgs e)
         {
-            Console.WriteLine(Convert.ToInt32(LibraryView.FocusedItem.SubItems[0].Text));
-            try
-            {
-                if (LibraryView.FocusedItem != null)
-                {
-                    if ((wplayer.URL.Length) == 0)
-                    {
-                        wplayer.URL = LibraryView.FocusedItem.SubItems[7].Text;
-                        
-                        
-                        currentTrackPosition = 0.00;
-                        wplayer.controls.currentPosition = currentTrackPosition;
-                    }
-                    else if (wplayer.URL != LibraryView.FocusedItem.SubItems[7].Text)
-                    {
-                        wplayer.URL = LibraryView.FocusedItem.SubItems[7].Text;
-                    }
-                    wplayer.controls.play();
-                    timer1.Start();
-                    UpdateDisplay();
-                   
-                }
-            }
-            catch (Exception err)
-            {
-                Console.WriteLine(err.Message);
-            }
-
+            Play();
         }
         /**********************************************************************
         * @name:       
@@ -767,6 +745,8 @@ namespace ImperialMusicPlayer
         **********************************************************************/
         private void NextButton_Click_1(object sender, EventArgs e)
         {
+            Next();
+            /*
             try
             {
                 if (LibraryView.FocusedItem.Index < LibraryView.Items.Count - 1)
@@ -788,6 +768,7 @@ namespace ImperialMusicPlayer
             {
                 Console.WriteLine(err.Message);
             }
+            */
         }
         /**********************************************************************
         * @name:       
@@ -798,6 +779,8 @@ namespace ImperialMusicPlayer
         **********************************************************************/
         private void PreviousButton_Click(object sender, EventArgs e)
         {
+            Previous();
+            /*
             try
             {
                 if (LibraryView.FocusedItem.Index > 0)
@@ -819,6 +802,7 @@ namespace ImperialMusicPlayer
             {
                 Console.WriteLine(err.Message);
             }
+            */
         }
         /**********************************************************************
         * @name:       
@@ -1183,6 +1167,7 @@ namespace ImperialMusicPlayer
         
         private void addToPlaylistToolStripMenuItem_Click(object sender, EventArgs e) {
              addSongToPlaylist(Convert.ToInt32(LibraryView.FocusedItem.SubItems[0].Text.ToString()), Convert.ToInt32(TreeExplorer.Nodes[1].Nodes[0].Name.ToString()));
+            
                 
             
         }
@@ -1493,8 +1478,8 @@ namespace ImperialMusicPlayer
         private void MusicPlayer_KeyDown(object sender, KeyEventArgs e)
         {
             //switch case to decide on action based on input
-            Console.WriteLine(e.KeyCode);
-            Console.WriteLine(e.KeyData);
+            //Console.WriteLine(e.KeyCode);
+            //Console.WriteLine(e.KeyData);
 
 
             if (e.Control)
@@ -1535,6 +1520,10 @@ namespace ImperialMusicPlayer
             }
         }
 
+        /*
+         *Plays the Windows Media Player using the path of the selected track (focused item) in the 
+         *LibraryView
+        */
         private void Play()
         {
             Console.WriteLine(Convert.ToInt32(LibraryView.FocusedItem.SubItems[0].Text));
@@ -1555,8 +1544,36 @@ namespace ImperialMusicPlayer
                         wplayer.URL = LibraryView.FocusedItem.SubItems[7].Text;
                     }
                     wplayer.controls.play();
+                    timer1.Start();
                     UpdateDisplay();
 
+                    //query db for all songs where playRecent != 0
+                    var updateQuery =
+                        from songs in db.SongLibrary
+                        select songs;
+                    //increment playRecent by one where PlayRecent != 0
+                    //set current song playRecent = 1
+                    foreach(Track t in updateQuery)
+                    {
+                        if( t.Path.CompareTo(LibraryView.FocusedItem.SubItems[7].Text.ToString()) == 0)
+                        {
+                            t.PlayRecent = 1;
+                        }
+                        else if(t.PlayRecent != 0)
+                        {
+                            t.PlayRecent++;
+                        }
+                    }
+                    
+                    //submit changes
+                    try
+                    {
+                        db.SubmitChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
                 }
             }
             catch (Exception err)
@@ -1577,11 +1594,15 @@ namespace ImperialMusicPlayer
                     LibraryView.Items[selectedIndex - 1].Focused = false;
                     LibraryView.Items[selectedIndex].Focused = true;
                     LibraryView.Items[selectedIndex].Selected = true;
+                    Play();
+                    /*
                     wplayer.URL = "";
                     wplayer.URL = LibraryView.FocusedItem.SubItems[7].Text;
                     Console.WriteLine("Playing Next Song # " + LibraryView.FocusedItem.Index + " " + LibraryView.FocusedItem.SubItems[7].Text);
                     wplayer.controls.play();
                     UpdateDisplay();
+                    */
+
                 }
             }
             catch (Exception err)
@@ -1602,11 +1623,16 @@ namespace ImperialMusicPlayer
                     LibraryView.Items[selectedIndex + 1].Focused = false;
                     LibraryView.Items[selectedIndex].Focused = true;
                     LibraryView.Items[selectedIndex].Selected = true;
+                    Play();
+
+                    /*
                     wplayer.URL = "";
                     wplayer.URL = LibraryView.FocusedItem.SubItems[7].Text;
                     Console.WriteLine("Playing Previous Song # " + LibraryView.FocusedItem.Index + " " + LibraryView.FocusedItem.SubItems[7].Text);
                     wplayer.controls.play();
                     UpdateDisplay();
+                    */
+
                 }
             }
             catch (Exception err)
@@ -1639,6 +1665,100 @@ namespace ImperialMusicPlayer
         private void decreaseVolumeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DecreaseVolume();
+        }
+
+        private void playRecentToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            /*
+            try
+            {
+                //Clear the children Items click drop down menu
+                (playRecentToolStripMenuItem).DropDownItems.Clear();
+
+                //query db for recently played songs where playRecent != 0
+                //display songs where playRecent < 10
+                var recentSongs =
+                        from songs in db.SongLibrary
+                        where songs.PlayRecent != 0
+                        select songs;
+
+                foreach(Track t in recentSongs)
+                {
+                    Console.WriteLine(t.PlayRecent.ToString());
+                    if(t.PlayRecent <=10)
+                    {
+                        (playRecentToolStripMenuItem).DropDownItems.Add(t.Title);
+                    }
+                }
+
+
+
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(err.Message);
+            }
+            */
+        }
+
+        private void progressBar_MouseClick(object sender, MouseEventArgs e)
+        {
+            //e.Location
+        }
+
+        private void playRecentToolStripMenuItem_MouseHover(object sender, EventArgs e)
+        {
+            try
+            {
+                //Clear the children Items click drop down menu
+                (playRecentToolStripMenuItem).DropDownItems.Clear();
+
+                //query db for recently played songs where playRecent != 0
+                //display songs where playRecent < 10
+                var recentSongs =
+                        from songs in db.SongLibrary
+                        where songs.PlayRecent != 0
+                        orderby songs.PlayRecent
+                        select songs;
+
+                foreach (Track t in recentSongs)
+                {
+                    Console.WriteLine(t.PlayRecent.ToString());
+                    if (t.PlayRecent <= 10)
+                    {
+                        (playRecentToolStripMenuItem).DropDownItems.Add(t.Title);
+                    }
+                }
+
+
+
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(err.Message);
+            }
+        }
+
+        private void playRecentToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            String selected = e.ClickedItem.Text.ToString();
+
+            //set focused item based on title; ideally should be on song id
+            for (int i = 0; i < LibraryView.Items.Count; i++ )
+            {
+                if(selected.CompareTo(LibraryView.Items[i].SubItems[1].Text.ToString()) == 0)
+                {
+                    LibraryView.FocusedItem = LibraryView.Items[i];
+                }
+            }
+
+                Play();
+            
+        }
+
+        private void goToCurrentSongToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LibraryView.FocusedItem.EnsureVisible();
         }
 
     }

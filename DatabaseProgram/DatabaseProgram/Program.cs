@@ -71,6 +71,8 @@ namespace ImperialMusicPlayer
         public string Comment;
         [Column]
         public string Genre;
+        [Column]
+        public int PlayRecent;
 
     }
     
