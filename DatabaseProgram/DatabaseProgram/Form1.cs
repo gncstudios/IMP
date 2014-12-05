@@ -1703,7 +1703,7 @@ namespace ImperialMusicPlayer
 
         private void progressBar_MouseClick(object sender, MouseEventArgs e)
         {
-            //e.Location
+            wplayer.controls.currentPosition = ((float)((float)e.Location.X) / (float)progressBar.Width) * wplayer.controls.currentItem.duration;
         }
 
         private void playRecentToolStripMenuItem_MouseHover(object sender, EventArgs e)
