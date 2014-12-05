@@ -9,3 +9,5 @@ DatabaseProgram/DatabaseProgram/obj/Debug/DatabaseProgram.csproj.ResolveComRefer
 DatabaseProgram/DatabaseProgram/obj/Debug/DatabaseProgram.exe
 DatabaseProgram/DatabaseProgram/obj/Debug/DatabaseProgram.pdb
 DatabaseProgram/DatabaseProgram/obj/Debug/Interop.MediaPlayer.dll
+DatabaseProgram/DatabaseProgram/SongLibrary.mdf
+DatabaseProgram/DatabaseProgram/SongLibrary_log.ldf

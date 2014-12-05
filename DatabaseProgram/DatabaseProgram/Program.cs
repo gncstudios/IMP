@@ -121,7 +121,7 @@ namespace ImperialMusicPlayer
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MusicPlayer());
+            Application.Run(new MusicPlayer(true));
         }
     }
     public static class Prompt {
