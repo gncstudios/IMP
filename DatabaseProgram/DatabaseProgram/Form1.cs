@@ -36,7 +36,7 @@ namespace ImperialMusicPlayer
     {
 
         MyDatabase db = new MyDatabase();
-        
+        bool repeat = false;
         WMPLib.WindowsMediaPlayer wplayer = new WMPLib.WindowsMediaPlayer();
         double currentTrackPosition = 0;
         int[] recentlyPlayed = new int[10];
@@ -1526,23 +1526,34 @@ namespace ImperialMusicPlayer
         */
         private void Play()
         {
+            string currentSong = wplayer.URL;
             Console.WriteLine(Convert.ToInt32(LibraryView.FocusedItem.SubItems[0].Text));
             try
             {
                 if (LibraryView.FocusedItem != null)
                 {
+                    if (repeat)
+                    {
+                        if ((wplayer.playState == WMPPlayState.wmppsStopped) || (wplayer.playState == WMPPlayState.wmppsReady))
+                            if (currentSong != null)
+                                wplayer.URL = currentSong; 
+                    }
+
                     if ((wplayer.URL.Length) == 0)
                     {
                         wplayer.URL = LibraryView.FocusedItem.SubItems[7].Text;
 
-
                         currentTrackPosition = 0.00;
                         wplayer.controls.currentPosition = currentTrackPosition;
                     }
+
+                    // if song is currently playing and the user selected a new song,
+                    // play the song unless the one selected is the current playing song
                     else if (wplayer.URL != LibraryView.FocusedItem.SubItems[7].Text)
                     {
                         wplayer.URL = LibraryView.FocusedItem.SubItems[7].Text;
                     }
+
                     wplayer.controls.play();
                     timer1.Start();
                     UpdateDisplay();
@@ -1760,6 +1771,16 @@ namespace ImperialMusicPlayer
         {
             LibraryView.FocusedItem.EnsureVisible();
         }
+
+        private void repeatToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (repeat)         // toggle the repeat boolean?
+                repeat = false;
+            else
+                repeat = true;
+        }
+
+        
 
     }
 }

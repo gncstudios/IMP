@@ -53,3 +53,12 @@ C:\Users\Samue_000\Documents\GitHub\IMP\DatabaseProgram\DatabaseProgram\obj\Debu
 C:\Users\Samue_000\Documents\GitHub\IMP\DatabaseProgram\DatabaseProgram\obj\Debug\DatabaseProgram.csproj.GenerateResource.Cache
 C:\Users\Samue_000\Documents\GitHub\IMP\DatabaseProgram\DatabaseProgram\bin\Debug\DatabaseProgram.exe
 C:\Users\Samue_000\Documents\GitHub\IMP\DatabaseProgram\DatabaseProgram\bin\Debug\DatabaseProgram.pdb
+C:\Users\PaulEdward\Documents\IMP\DatabaseProgram\DatabaseProgram\bin\Debug\SongLibrary.mdf
+C:\Users\PaulEdward\Documents\IMP\DatabaseProgram\DatabaseProgram\bin\Debug\SongLibrary_log.ldf
+C:\Users\PaulEdward\Documents\IMP\DatabaseProgram\DatabaseProgram\bin\Debug\DatabaseProgram.exe
+C:\Users\PaulEdward\Documents\IMP\DatabaseProgram\DatabaseProgram\bin\Debug\DatabaseProgram.pdb
+C:\Users\PaulEdward\Documents\IMP\DatabaseProgram\DatabaseProgram\bin\Debug\policy.2.0.taglib-sharp.config
+C:\Users\PaulEdward\Documents\IMP\DatabaseProgram\DatabaseProgram\obj\Debug\DatabaseProgram.csprojResolveAssemblyReference.cache
+C:\Users\PaulEdward\Documents\IMP\DatabaseProgram\DatabaseProgram\obj\Debug\ImperialMusicPlayer.MusicPlayer.resources
+C:\Users\PaulEdward\Documents\IMP\DatabaseProgram\DatabaseProgram\obj\Debug\ImperialMusicPlayer.Properties.Resources.resources
+C:\Users\PaulEdward\Documents\IMP\DatabaseProgram\DatabaseProgram\obj\Debug\DatabaseProgram.csproj.GenerateResource.Cache

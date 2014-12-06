@@ -62,6 +62,7 @@ namespace ImperialMusicPlayer
             this.previousToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.playRecentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.goToCurrentSongToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.repeatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SongAdd = new System.Windows.Forms.Button();
             this.SongBrowse = new System.Windows.Forms.OpenFileDialog();
             this.TrackMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -343,7 +344,8 @@ namespace ImperialMusicPlayer
             this.nextToolStripMenuItem,
             this.previousToolStripMenuItem,
             this.playRecentToolStripMenuItem,
-            this.goToCurrentSongToolStripMenuItem});
+            this.goToCurrentSongToolStripMenuItem,
+            this.repeatToolStripMenuItem});
             this.controlsToolStripMenuItem.Name = "controlsToolStripMenuItem";
             this.controlsToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
             this.controlsToolStripMenuItem.Text = "Controls";
@@ -384,6 +386,14 @@ namespace ImperialMusicPlayer
             this.goToCurrentSongToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.goToCurrentSongToolStripMenuItem.Text = "Go to Current Song";
             this.goToCurrentSongToolStripMenuItem.Click += new System.EventHandler(this.goToCurrentSongToolStripMenuItem_Click);
+            // 
+            // repeatToolStripMenuItem
+            // 
+            this.repeatToolStripMenuItem.CheckOnClick = true;
+            this.repeatToolStripMenuItem.Name = "repeatToolStripMenuItem";
+            this.repeatToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.repeatToolStripMenuItem.Text = "Repeat";
+            this.repeatToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.repeatToolStripMenuItem_CheckStateChanged);
             // 
             // SongAdd
             // 
@@ -852,6 +862,7 @@ namespace ImperialMusicPlayer
         private System.Windows.Forms.Label durationTimer;
         private System.Windows.Forms.Label currentPositionTimer;
         private System.Windows.Forms.ListView LibraryView;
+        private System.Windows.Forms.ToolStripMenuItem repeatToolStripMenuItem;
     }
 
     public class SongView : System.Windows.Forms.ListView
