@@ -1477,20 +1477,11 @@ namespace ImperialMusicPlayer
 
         private void MusicPlayer_KeyDown(object sender, KeyEventArgs e)
         { 
-            int randomIndex = 0; 
+            
             //all other keys are preceded by ctrl and are therefore valid control values for shortcuts
             if (e.KeyCode == Keys.Space)
             {
-                if (shuffle & (wplayer.playState == WMPPlayState.wmppsUndefined))
-                {
-                    Random random = new Random(); 
-                    randomIndex = random.Next(LibraryView.Items.Count);   
-                    LibraryView.Items[randomIndex].Focused = true;
-                    LibraryView.Items[randomIndex].Selected = true;
-                    Play();
-                }
-                else
-                     Play();
+                Play();
             }            
         }
 
@@ -1501,9 +1492,17 @@ namespace ImperialMusicPlayer
         private void Play()
         {
             string currentSong = wplayer.URL;
-            Console.WriteLine(Convert.ToInt32(LibraryView.FocusedItem.SubItems[0].Text));
+            //Console.WriteLine(Convert.ToInt32(LibraryView.FocusedItem.SubItems[0].Text));
             try
             {
+                if (shuffle & (wplayer.playState == WMPPlayState.wmppsUndefined))
+                {
+                    Random random = new Random();
+                    int randomIndex = random.Next(LibraryView.Items.Count);
+                    LibraryView.Items[randomIndex].Focused = true;
+                    LibraryView.Items[randomIndex].Selected = true;
+                }
+
                 if (LibraryView.FocusedItem != null)
                 {
                     if (repeat)
