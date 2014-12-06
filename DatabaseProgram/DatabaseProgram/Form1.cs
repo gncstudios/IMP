@@ -1495,8 +1495,14 @@ namespace ImperialMusicPlayer
             //Console.WriteLine(Convert.ToInt32(LibraryView.FocusedItem.SubItems[0].Text));
             try
             {
-                if (shuffle & (wplayer.playState == WMPPlayState.wmppsUndefined))
+                if (shuffle)
                 {
+                    //nullify selected items so that there aren't two at a time selected.
+                    for(int i = 0; i<LibraryView.Items.Count; i++)
+                    {
+                        LibraryView.Items[i].Selected = false;
+                    }
+
                     Random random = new Random();
                     int randomIndex = random.Next(LibraryView.Items.Count);
                     LibraryView.Items[randomIndex].Focused = true;
@@ -1531,6 +1537,10 @@ namespace ImperialMusicPlayer
                     timer1.Start();
                     UpdateDisplay();
 
+                    //if library view is not selected and the play button is clicked, the playing song
+                    //  is not selected so next, previous, etc do not function.
+                    LibraryView.FocusedItem.Selected = true;
+                    
                     //query db for all songs where playRecent != 0
                     var updateQuery =
                         from songs in db.SongLibrary
@@ -1569,26 +1579,9 @@ namespace ImperialMusicPlayer
         private void Next()
         {
             int selectedIndex = 0;
-            int randomIndex = 0;
             try
             {
-                if (shuffle)
-                {
-                    Random random = new Random();
-                    do
-                    {
-                        randomIndex = random.Next(LibraryView.Items.Count);
-                        selectedIndex = LibraryView.SelectedIndices[0];
-                    } while (randomIndex == selectedIndex);
-                        
-                    LibraryView.Items[selectedIndex].Selected = false;
-                    LibraryView.Items[selectedIndex].Focused = false;
-                    LibraryView.Items[randomIndex].Focused = true;
-                    LibraryView.Items[randomIndex].Selected = true;
-                    Play(); 
-                }
-                    
-                else if (LibraryView.FocusedItem.Index < LibraryView.Items.Count - 1)
+                if (LibraryView.FocusedItem.Index < LibraryView.Items.Count - 1)
                 {
                     selectedIndex = LibraryView.SelectedIndices[0];
                     selectedIndex++;
@@ -1618,15 +1611,6 @@ namespace ImperialMusicPlayer
                     LibraryView.Items[selectedIndex].Focused = true;
                     LibraryView.Items[selectedIndex].Selected = true;
                     Play();
-
-                    /*
-                    wplayer.URL = "";
-                    wplayer.URL = LibraryView.FocusedItem.SubItems[7].Text;
-                    Console.WriteLine("Playing Previous Song # " + LibraryView.FocusedItem.Index + " " + LibraryView.FocusedItem.SubItems[7].Text);
-                    wplayer.controls.play();
-                    UpdateDisplay();
-                    */
-
                 }
             }
             catch (Exception err)
