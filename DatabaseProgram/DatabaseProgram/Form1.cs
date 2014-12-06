@@ -37,13 +37,11 @@ namespace ImperialMusicPlayer
     public partial class MusicPlayer : Form
     {
 
-        MyDatabase db = new MyDatabase();
-<<<<<<< HEAD
+        MyDatabase db = new MyDatabase(); 
         bool repeat = false;
-=======
+        bool shuffle = false;
 
-        Boolean persistence, mouse_click = false;
->>>>>>> 1828f1d1cfb1ae2a75268e56c2573574432c76cd
+        Boolean persistence, mouse_click = false; 
         WMPLib.WindowsMediaPlayer wplayer = new WMPLib.WindowsMediaPlayer();
         double currentTrackPosition = 0;
         int[] recentlyPlayed = new int[10];
@@ -1467,16 +1465,32 @@ namespace ImperialMusicPlayer
                 time = wplayer.controls.currentItem.duration - wplayer.controls.currentPosition;
                 System.TimeSpan timeLeft = TimeSpan.FromSeconds(time);
                 durationTimer.Text = String.Format("{0:D2}:{1:D2}", timeLeft.Minutes, timeLeft.Seconds); //Convert.ToString(timeLeft);
-
+            }
+            else if (wplayer.playState == WMPPlayState.wmppsStopped)
+            {
+                if (repeat)
+                    Play();
+                else
+                    Next();
             }
         }
 
         private void MusicPlayer_KeyDown(object sender, KeyEventArgs e)
-        {
+        { 
+            int randomIndex = 0; 
             //all other keys are preceded by ctrl and are therefore valid control values for shortcuts
             if (e.KeyCode == Keys.Space)
             {
-                Play();
+                if (shuffle & (wplayer.playState == WMPPlayState.wmppsUndefined))
+                {
+                    Random random = new Random(); 
+                    randomIndex = random.Next(LibraryView.Items.Count);   
+                    LibraryView.Items[randomIndex].Focused = true;
+                    LibraryView.Items[randomIndex].Selected = true;
+                    Play();
+                }
+                else
+                     Play();
             }            
         }
 
@@ -1555,19 +1569,35 @@ namespace ImperialMusicPlayer
 
         private void Next()
         {
+            int selectedIndex = 0;
+            int randomIndex = 0;
             try
             {
-                if (LibraryView.FocusedItem.Index < LibraryView.Items.Count - 1)
+                if (shuffle)
                 {
-                    int selectedIndex = LibraryView.SelectedIndices[0];
+                    Random random = new Random();
+                    do
+                    {
+                        randomIndex = random.Next(LibraryView.Items.Count);
+                        selectedIndex = LibraryView.SelectedIndices[0];
+                    } while (randomIndex == selectedIndex);
+                        
+                    LibraryView.Items[selectedIndex].Selected = false;
+                    LibraryView.Items[selectedIndex].Focused = false;
+                    LibraryView.Items[randomIndex].Focused = true;
+                    LibraryView.Items[randomIndex].Selected = true;
+                    Play(); 
+                }
+                    
+                else if (LibraryView.FocusedItem.Index < LibraryView.Items.Count - 1)
+                {
+                    selectedIndex = LibraryView.SelectedIndices[0];
                     selectedIndex++;
                     LibraryView.Items[selectedIndex - 1].Selected = false;
                     LibraryView.Items[selectedIndex - 1].Focused = false;
                     LibraryView.Items[selectedIndex].Focused = true;
                     LibraryView.Items[selectedIndex].Selected = true;
                     Play();
-                   
-
                 }
             }
             catch (Exception err)
@@ -1690,20 +1720,9 @@ namespace ImperialMusicPlayer
         private void goToCurrentSongToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LibraryView.FocusedItem.EnsureVisible();
-        }
+        } 
 
-<<<<<<< HEAD
-        private void repeatToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
-        {
-            if (repeat)         // toggle the repeat boolean?
-                repeat = false;
-            else
-                repeat = true;
-        }
-
-        
-
-=======
+         
         private void MusicPlayer_FormClosing(object sender, FormClosingEventArgs e)
         {
             
@@ -1750,6 +1769,22 @@ namespace ImperialMusicPlayer
             mouse_click = false;
         }
 
+        private void repeatStripMenuItem_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (repeat)         // toggle the repeat boolean
+                repeat = false;
+            else
+                repeat = true;
+        }
+
+        private void shuffleToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (shuffle)         // toggle the shuffle boolean
+                shuffle = false;
+            else
+                shuffle = true;
+        }
+
     }
 
     // Implements the manual sorting of items by columns. 
@@ -1768,8 +1803,7 @@ namespace ImperialMusicPlayer
         public int Compare(object x, object y)
         {
             return String.Compare(((ListViewItem)x).SubItems[col].Text, ((ListViewItem)y).SubItems[col].Text);
-        }
->>>>>>> 1828f1d1cfb1ae2a75268e56c2573574432c76cd
+        } 
     }
 
 }
