@@ -30,6 +30,8 @@ using System.IO;
 using System.Media;
 using WMPLib;
 
+using System.Collections;
+
 namespace ImperialMusicPlayer
 {
     public partial class MusicPlayer : Form
@@ -37,7 +39,7 @@ namespace ImperialMusicPlayer
 
         MyDatabase db = new MyDatabase();
 
-        Boolean persistence;
+        Boolean persistence, mouse_click = false;
         WMPLib.WindowsMediaPlayer wplayer = new WMPLib.WindowsMediaPlayer();
         double currentTrackPosition = 0;
         int[] recentlyPlayed = new int[10];
@@ -869,7 +871,7 @@ namespace ImperialMusicPlayer
             // check if right click
             if (e.Button == MouseButtons.Right)
             {
-                TrackMenu.Show(Cursor.Position);
+                mouse_click = true;
             }
         }
         ///////////////////////////////////////////////////////////////////////
@@ -1304,18 +1306,7 @@ namespace ImperialMusicPlayer
             UpdateDisplayToShowLibrary();
 
          }
-
         
-        private void LibraryView_ColumnRightClick(object sender, MouseEventArgs e)
-        {
-            //Console.Write(LibraryView.Columns[e.Column].Text);
-            // check if right click
-           //if (e.Button == MouseButtons.Right)
-            //{
-                HeaderMenu.Show(Cursor.Position);
-            //}
-        }
-
         private void HideLibraryViewColumn(int index)
         {
             if (persistence)
@@ -1327,6 +1318,7 @@ namespace ImperialMusicPlayer
                     where status.index_of == index
                     select status;
 
+                //only 1 item in updateQuery
                 foreach (columnStatus status in updateQuery)
                 {
                     status.visible = false;
@@ -1342,7 +1334,6 @@ namespace ImperialMusicPlayer
                 }
             }
 
-            UpdateColumns();
         }
 
         private void ShowLibraryViewColumn(int index)
@@ -1356,6 +1347,7 @@ namespace ImperialMusicPlayer
                     where status.index_of == index
                     select status;
 
+                //only 1 item in updateQuery
                 foreach (columnStatus status in updateQuery)
                 {
                     status.visible = true;
@@ -1370,14 +1362,7 @@ namespace ImperialMusicPlayer
                     Console.WriteLine(e);
                 }
             }
-            UpdateColumns();
 
-        }
-
-        private void LibraryView_ColumnWidthChanged(object sender, ColumnWidthChangedEventArgs e)
-        {
-           // Console.WriteLine(sender.ToString());
-           // Console.WriteLine(e.ToString());
 
         }
 
@@ -1404,7 +1389,9 @@ namespace ImperialMusicPlayer
             {
                 HideLibraryViewColumn(index);
             }
-
+            
+            //update libraryView
+            UpdateColumns();
             
         }
 
@@ -1417,13 +1404,12 @@ namespace ImperialMusicPlayer
 
         private void UpdateColumns()
         {
-            /*
-            var columns = from columnStatus status
-                              in db.ColumnStatus
-                          select status;
-            */
+            //sets the width of the columns based on which ones are checked in the menu
 
             LibraryView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            //hides first and last columns (id and path)
+            LibraryView.Columns[0].Width = 0;
+            LibraryView.Columns[LibraryView.Columns.Count - 1].Width = 0;
 
             foreach(ToolStripMenuItem tsmi in viewToolStripMenuItem.DropDownItems)
             {
@@ -1436,9 +1422,12 @@ namespace ImperialMusicPlayer
 
         private void LibraryView_ColumnClick(object sender, ColumnClickEventArgs e)
         {
+            /*
             System.Windows.Forms.MouseButtons b = new System.Windows.Forms.MouseButtons();
             MouseEventArgs ev = new MouseEventArgs(b,1,Cursor.Position.X,Cursor.Position.Y,0);
             LibraryView_ColumnRightClick(sender, ev);
+            */
+            this.LibraryView.ListViewItemSorter = new ListViewItemComparer(e.Column);
         }
         
         private void InitColumnStatusMenu()
@@ -1714,7 +1703,45 @@ namespace ImperialMusicPlayer
                         HideLibraryViewColumn(viewToolStripMenuItem.DropDownItems.IndexOf(tsmi)+2);
                 }
             }
+
+            UpdateColumns();
+        }
+
+        private void contextMenuContainer_Opening(object sender, CancelEventArgs e)
+        {
+            //if mouse click fires, show trackmenu
+            if(mouse_click)
+            {
+                TrackMenu.Show(Cursor.Position);
+            }
+            //else show headermenu
+            else
+            {
+                HeaderMenu.Show(Cursor.Position);
+            }
+            //reset mouse_click flag
+            mouse_click = false;
         }
 
     }
+
+    // Implements the manual sorting of items by columns. 
+    //From example at: http://msdn.microsoft.com/en-us/library/system.windows.forms.listview.listviewitemsorter(v=vs.110).aspx
+    class ListViewItemComparer : IComparer
+    {
+        private int col;
+        public ListViewItemComparer()
+        {
+            col = 0;
+        }
+        public ListViewItemComparer(int column)
+        {
+            col = column;
+        }
+        public int Compare(object x, object y)
+        {
+            return String.Compare(((ListViewItem)x).SubItems[col].Text, ((ListViewItem)y).SubItems[col].Text);
+        }
+    }
+
 }
