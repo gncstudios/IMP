@@ -62,6 +62,14 @@ namespace ImperialMusicPlayer
             this.previousToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.playRecentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.goToCurrentSongToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+<<<<<<< HEAD
+=======
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.increaseVolumeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.decreaseVolumeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.shuffleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+>>>>>>> 1828f1d1cfb1ae2a75268e56c2573574432c76cd
             this.repeatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SongAdd = new System.Windows.Forms.Button();
             this.SongBrowse = new System.Windows.Forms.OpenFileDialog();
@@ -99,6 +107,7 @@ namespace ImperialMusicPlayer
             this.durationTimer = new System.Windows.Forms.Label();
             this.currentPositionTimer = new System.Windows.Forms.Label();
             this.LibraryView = new System.Windows.Forms.ListView();
+            this.contextMenuContainer = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuStrip1.SuspendLayout();
             this.TrackMenu.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -345,6 +354,14 @@ namespace ImperialMusicPlayer
             this.previousToolStripMenuItem,
             this.playRecentToolStripMenuItem,
             this.goToCurrentSongToolStripMenuItem,
+<<<<<<< HEAD
+=======
+            this.toolStripSeparator1,
+            this.increaseVolumeToolStripMenuItem,
+            this.decreaseVolumeToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.shuffleToolStripMenuItem,
+>>>>>>> 1828f1d1cfb1ae2a75268e56c2573574432c76cd
             this.repeatToolStripMenuItem});
             this.controlsToolStripMenuItem.Name = "controlsToolStripMenuItem";
             this.controlsToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
@@ -353,40 +370,43 @@ namespace ImperialMusicPlayer
             // playToolStripMenuItem
             // 
             this.playToolStripMenuItem.Name = "playToolStripMenuItem";
-            this.playToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.playToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
             this.playToolStripMenuItem.Text = "Play";
             this.playToolStripMenuItem.Click += new System.EventHandler(this.PlayButton_Click);
             // 
             // nextToolStripMenuItem
             // 
             this.nextToolStripMenuItem.Name = "nextToolStripMenuItem";
-            this.nextToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.nextToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Right)));
+            this.nextToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
             this.nextToolStripMenuItem.Text = "Next";
             this.nextToolStripMenuItem.Click += new System.EventHandler(this.NextButton_Click_1);
             // 
             // previousToolStripMenuItem
             // 
             this.previousToolStripMenuItem.Name = "previousToolStripMenuItem";
-            this.previousToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.previousToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Left)));
+            this.previousToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
             this.previousToolStripMenuItem.Text = "Previous";
             this.previousToolStripMenuItem.Click += new System.EventHandler(this.PreviousButton_Click);
             // 
             // playRecentToolStripMenuItem
             // 
             this.playRecentToolStripMenuItem.Name = "playRecentToolStripMenuItem";
-            this.playRecentToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.playRecentToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
             this.playRecentToolStripMenuItem.Text = "Play Recent";
             this.playRecentToolStripMenuItem.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.playRecentToolStripMenuItem_DropDownItemClicked);
-            this.playRecentToolStripMenuItem.Click += new System.EventHandler(this.playRecentToolStripMenuItem_Click);
             this.playRecentToolStripMenuItem.MouseHover += new System.EventHandler(this.playRecentToolStripMenuItem_MouseHover);
             // 
             // goToCurrentSongToolStripMenuItem
             // 
             this.goToCurrentSongToolStripMenuItem.Name = "goToCurrentSongToolStripMenuItem";
-            this.goToCurrentSongToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.goToCurrentSongToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
+            this.goToCurrentSongToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
             this.goToCurrentSongToolStripMenuItem.Text = "Go to Current Song";
             this.goToCurrentSongToolStripMenuItem.Click += new System.EventHandler(this.goToCurrentSongToolStripMenuItem_Click);
             // 
+<<<<<<< HEAD
             // repeatToolStripMenuItem
             // 
             this.repeatToolStripMenuItem.CheckOnClick = true;
@@ -394,6 +414,45 @@ namespace ImperialMusicPlayer
             this.repeatToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.repeatToolStripMenuItem.Text = "Repeat";
             this.repeatToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.repeatToolStripMenuItem_CheckStateChanged);
+=======
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(213, 6);
+            // 
+            // increaseVolumeToolStripMenuItem
+            // 
+            this.increaseVolumeToolStripMenuItem.Name = "increaseVolumeToolStripMenuItem";
+            this.increaseVolumeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
+            this.increaseVolumeToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
+            this.increaseVolumeToolStripMenuItem.Text = "Increase Volume";
+            this.increaseVolumeToolStripMenuItem.Click += new System.EventHandler(this.increaseVolumeToolStripMenuItem_Click);
+            // 
+            // decreaseVolumeToolStripMenuItem
+            // 
+            this.decreaseVolumeToolStripMenuItem.Name = "decreaseVolumeToolStripMenuItem";
+            this.decreaseVolumeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
+            this.decreaseVolumeToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
+            this.decreaseVolumeToolStripMenuItem.Text = "Decrease Volume";
+            this.decreaseVolumeToolStripMenuItem.Click += new System.EventHandler(this.decreaseVolumeToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(213, 6);
+            // 
+            // shuffleToolStripMenuItem
+            // 
+            this.shuffleToolStripMenuItem.Name = "shuffleToolStripMenuItem";
+            this.shuffleToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
+            this.shuffleToolStripMenuItem.Text = "Shuffle";
+            // 
+            // repeatToolStripMenuItem
+            // 
+            this.repeatToolStripMenuItem.Name = "repeatToolStripMenuItem";
+            this.repeatToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
+            this.repeatToolStripMenuItem.Text = "Repeat";
+>>>>>>> 1828f1d1cfb1ae2a75268e56c2573574432c76cd
             // 
             // SongAdd
             // 
@@ -481,7 +540,6 @@ namespace ImperialMusicPlayer
             this.addToPlaylistToolStripMenuItem.Name = "addToPlaylistToolStripMenuItem";
             this.addToPlaylistToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
             this.addToPlaylistToolStripMenuItem.Text = "Add To Playlist";
-            this.addToPlaylistToolStripMenuItem.Click += new System.EventHandler(this.addToPlaylistToolStripMenuItem_Click);
             // 
             // clearAllPlaylistsToolStripMenuItem
             // 
@@ -729,6 +787,7 @@ namespace ImperialMusicPlayer
             this.LibraryView.BackgroundImage = global::ImperialMusicPlayer.Properties.Resources.ImperialMusicPlayerLibraryBackground;
             this.LibraryView.BackgroundImageTiled = true;
             this.LibraryView.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.LibraryView.ContextMenuStrip = this.contextMenuContainer;
             this.LibraryView.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.LibraryView.Font = new System.Drawing.Font("Calibri", 10F);
             this.LibraryView.ForeColor = System.Drawing.Color.White;
@@ -753,6 +812,12 @@ namespace ImperialMusicPlayer
             this.LibraryView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MusicPlayer_KeyDown);
             this.LibraryView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.LibraryView_MouseClick);
             this.LibraryView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.LibraryView_MouseDoubleClick);
+            // 
+            // contextMenuContainer
+            // 
+            this.contextMenuContainer.Name = "contextMenuContainer";
+            this.contextMenuContainer.Size = new System.Drawing.Size(61, 4);
+            this.contextMenuContainer.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuContainer_Opening);
             // 
             // MusicPlayer
             // 
@@ -779,6 +844,7 @@ namespace ImperialMusicPlayer
             this.MinimumSize = new System.Drawing.Size(1000, 600);
             this.Name = "MusicPlayer";
             this.Text = "Imperial Music Player";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MusicPlayer_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MusicPlayer_KeyDown);
             this.menuStrip1.ResumeLayout(false);
@@ -862,7 +928,18 @@ namespace ImperialMusicPlayer
         private System.Windows.Forms.Label durationTimer;
         private System.Windows.Forms.Label currentPositionTimer;
         private System.Windows.Forms.ListView LibraryView;
+<<<<<<< HEAD
         private System.Windows.Forms.ToolStripMenuItem repeatToolStripMenuItem;
+=======
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem increaseVolumeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem decreaseVolumeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem shuffleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem repeatToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip contextMenuContainer;
+        
+>>>>>>> 1828f1d1cfb1ae2a75268e56c2573574432c76cd
     }
 
     public class SongView : System.Windows.Forms.ListView

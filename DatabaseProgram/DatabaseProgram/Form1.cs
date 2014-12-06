@@ -30,13 +30,20 @@ using System.IO;
 using System.Media;
 using WMPLib;
 
+using System.Collections;
+
 namespace ImperialMusicPlayer
 {
     public partial class MusicPlayer : Form
     {
 
         MyDatabase db = new MyDatabase();
+<<<<<<< HEAD
         bool repeat = false;
+=======
+
+        Boolean persistence, mouse_click = false;
+>>>>>>> 1828f1d1cfb1ae2a75268e56c2573574432c76cd
         WMPLib.WindowsMediaPlayer wplayer = new WMPLib.WindowsMediaPlayer();
         double currentTrackPosition = 0;
         int[] recentlyPlayed = new int[10];
@@ -190,7 +197,7 @@ namespace ImperialMusicPlayer
             "JPop",
             "Synth Pop"
         };
-        public MusicPlayer()
+        public MusicPlayer(Boolean p)
         {
             InitializeComponent();
             InitSqlTables();
@@ -198,12 +205,13 @@ namespace ImperialMusicPlayer
             InitControls();
             InitializeTreeView();
             UpdateTree();
-            UpdatePlaylistMenuItems();
+            //UpdatePlaylistMenuItems();
 
             InitColumnStatusMenu();
             
            //DropTables();
 
+            persistence = p;
         }
         ///////////////////////////////////////////////////////////////////////
         /// <summary></summary>
@@ -867,7 +875,7 @@ namespace ImperialMusicPlayer
             // check if right click
             if (e.Button == MouseButtons.Right)
             {
-                TrackMenu.Show(Cursor.Position);
+                mouse_click = true;
             }
         }
         ///////////////////////////////////////////////////////////////////////
@@ -1040,7 +1048,7 @@ namespace ImperialMusicPlayer
         
         public void CreatePlaylist() {
             InstertPlaylistIntoSqlTable(Prompt.ShowDialog("Playlist Name", "New Playlist Name"));
-            UpdatePlaylistMenuItems();
+            //UpdatePlaylistMenuItems();
             UpdateTree();
             TreeExplorer.ExpandAll();
             TreeExplorer.SelectedNode = TreeExplorer.Nodes[TreeExplorer.Nodes.Count - 1].LastNode;
@@ -1102,6 +1110,7 @@ namespace ImperialMusicPlayer
             foreach (Playlist playlist in db.PlaylistLibrary) {
                 TreeExplorer.Nodes[1].Nodes.Add(playlist.PlaylistName).Name = playlist.ID.ToString(); ;
             }
+            UpdatePlaylistMenuItems();
         }
 
         private void deleteAllPlaylistsToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -1165,13 +1174,6 @@ namespace ImperialMusicPlayer
             UpdateDisplayToShowLibrary();
         }
         
-        private void addToPlaylistToolStripMenuItem_Click(object sender, EventArgs e) {
-             addSongToPlaylist(Convert.ToInt32(LibraryView.FocusedItem.SubItems[0].Text.ToString()), Convert.ToInt32(TreeExplorer.Nodes[1].Nodes[0].Name.ToString()));
-            
-                
-            
-        }
-      
         public void addSongToPlaylist(int songId, int playlistId) {
             PlaylistReference playlistReference = new PlaylistReference();
             MessageBox.Show("Added to " + TreeExplorer.SelectedNode.Text + " playlist");
@@ -1206,7 +1208,7 @@ namespace ImperialMusicPlayer
         private void openPlaylistInNewWindowToolStripMenuItem_Click(object sender, EventArgs e) {
 
             if (TreeExplorer.SelectedNode.Name != "Library" && TreeExplorer.SelectedNode.Name != "Playlist") {
-                MusicPlayer newPlaylistWindow = new MusicPlayer();
+                MusicPlayer newPlaylistWindow = new MusicPlayer(false);
                 newPlaylistWindow.Show();
                 newPlaylistWindow.TreeExplorer.Hide();
                 foreach (TreeNode node in newPlaylistWindow.TreeExplorer.Nodes[1].Nodes) {
@@ -1308,75 +1310,63 @@ namespace ImperialMusicPlayer
             UpdateDisplayToShowLibrary();
 
          }
-
         
-        private void LibraryView_ColumnRightClick(object sender, MouseEventArgs e)
-        {
-            //Console.Write(LibraryView.Columns[e.Column].Text);
-            // check if right click
-           //if (e.Button == MouseButtons.Right)
-            //{
-                HeaderMenu.Show(Cursor.Position);
-            //}
-        }
-
         private void HideLibraryViewColumn(int index)
         {
-            //set visible to false in the database for this column
-            // and update columns
-            var updateQuery =
-                from status in db.ColumnStatus
-                where status.index_of == index
-                select status;
-
-            foreach (columnStatus status in updateQuery)
+            if (persistence)
             {
-                status.visible = false;
+                //set visible to false in the database for this column
+                // and update columns
+                var updateQuery =
+                    from status in db.ColumnStatus
+                    where status.index_of == index
+                    select status;
+
+                //only 1 item in updateQuery
+                foreach (columnStatus status in updateQuery)
+                {
+                    status.visible = false;
+                }
+
+                try
+                {
+                    db.SubmitChanges();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
             }
 
-            try
-            {
-                db.SubmitChanges();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-
-            UpdateColumns();
         }
 
         private void ShowLibraryViewColumn(int index)
         {
             //set visible = true and update columns
             //set visible to false in the database for this column
-            var updateQuery =
-                from status in db.ColumnStatus
-                where status.index_of == index
-                select status;
-
-            foreach (columnStatus status in updateQuery)
+            if (persistence)
             {
-                status.visible = true;
+                var updateQuery =
+                    from status in db.ColumnStatus
+                    where status.index_of == index
+                    select status;
+
+                //only 1 item in updateQuery
+                foreach (columnStatus status in updateQuery)
+                {
+                    status.visible = true;
+                }
+
+                try
+                {
+                    db.SubmitChanges();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
             }
 
-            try
-            {
-                db.SubmitChanges();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-
-            UpdateColumns();
-
-        }
-
-        private void LibraryView_ColumnWidthChanged(object sender, ColumnWidthChangedEventArgs e)
-        {
-           // Console.WriteLine(sender.ToString());
-           // Console.WriteLine(e.ToString());
 
         }
 
@@ -1403,7 +1393,9 @@ namespace ImperialMusicPlayer
             {
                 HideLibraryViewColumn(index);
             }
-
+            
+            //update libraryView
+            UpdateColumns();
             
         }
 
@@ -1416,26 +1408,30 @@ namespace ImperialMusicPlayer
 
         private void UpdateColumns()
         {
-            var columns = from columnStatus status
-                              in db.ColumnStatus
-                          select status;
+            //sets the width of the columns based on which ones are checked in the menu
 
             LibraryView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            //hides first and last columns (id and path)
+            LibraryView.Columns[0].Width = 0;
+            LibraryView.Columns[LibraryView.Columns.Count - 1].Width = 0;
 
-            foreach(columnStatus status in columns)
+            foreach(ToolStripMenuItem tsmi in viewToolStripMenuItem.DropDownItems)
             {
-                if(!status.visible)
+                if(!tsmi.Checked)
                 {
-                    LibraryView.Columns[status.index_of].Width = 0;
+                    LibraryView.Columns[viewToolStripMenuItem.DropDownItems.IndexOf(tsmi) + 2].Width = 0;
                 }
             }
         }
 
         private void LibraryView_ColumnClick(object sender, ColumnClickEventArgs e)
         {
+            /*
             System.Windows.Forms.MouseButtons b = new System.Windows.Forms.MouseButtons();
             MouseEventArgs ev = new MouseEventArgs(b,1,Cursor.Position.X,Cursor.Position.Y,0);
             LibraryView_ColumnRightClick(sender, ev);
+            */
+            this.LibraryView.ListViewItemSorter = new ListViewItemComparer(e.Column);
         }
         
         private void InitColumnStatusMenu()
@@ -1477,47 +1473,11 @@ namespace ImperialMusicPlayer
 
         private void MusicPlayer_KeyDown(object sender, KeyEventArgs e)
         {
-            //switch case to decide on action based on input
-            //Console.WriteLine(e.KeyCode);
-            //Console.WriteLine(e.KeyData);
-
-
-            if (e.Control)
+            //all other keys are preceded by ctrl and are therefore valid control values for shortcuts
+            if (e.KeyCode == Keys.Space)
             {
-                switch (e.KeyCode)
-                {
-                    //ctrl+right arrow
-                    case Keys.Right:
-                        Next();
-                        break;
-
-                    //ctrl+left arrow
-                    case Keys.Left:
-                        Previous();
-                        break;
-
-                    //ctrl+L
-                    case Keys.L:
-                        break;
-
-                    //ctrl+I
-                    case Keys.I:
-                        IncreaseVolume();
-                        break;
-
-                    //ctrl+D
-                    case Keys.D:
-                        DecreaseVolume();
-                        break;
-                }
-            }
-            else
-            {
-                if (e.KeyCode == Keys.Space)
-                {
-                    Play();
-                }
-            }
+                Play();
+            }            
         }
 
         /*
@@ -1606,13 +1566,7 @@ namespace ImperialMusicPlayer
                     LibraryView.Items[selectedIndex].Focused = true;
                     LibraryView.Items[selectedIndex].Selected = true;
                     Play();
-                    /*
-                    wplayer.URL = "";
-                    wplayer.URL = LibraryView.FocusedItem.SubItems[7].Text;
-                    Console.WriteLine("Playing Next Song # " + LibraryView.FocusedItem.Index + " " + LibraryView.FocusedItem.SubItems[7].Text);
-                    wplayer.controls.play();
-                    UpdateDisplay();
-                    */
+                   
 
                 }
             }
@@ -1678,40 +1632,6 @@ namespace ImperialMusicPlayer
             DecreaseVolume();
         }
 
-        private void playRecentToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            /*
-            try
-            {
-                //Clear the children Items click drop down menu
-                (playRecentToolStripMenuItem).DropDownItems.Clear();
-
-                //query db for recently played songs where playRecent != 0
-                //display songs where playRecent < 10
-                var recentSongs =
-                        from songs in db.SongLibrary
-                        where songs.PlayRecent != 0
-                        select songs;
-
-                foreach(Track t in recentSongs)
-                {
-                    Console.WriteLine(t.PlayRecent.ToString());
-                    if(t.PlayRecent <=10)
-                    {
-                        (playRecentToolStripMenuItem).DropDownItems.Add(t.Title);
-                    }
-                }
-
-
-
-            }
-            catch (Exception err)
-            {
-                Console.WriteLine(err.Message);
-            }
-            */
-        }
-
         private void progressBar_MouseClick(object sender, MouseEventArgs e)
         {
             wplayer.controls.currentPosition = ((float)((float)e.Location.X) / (float)progressBar.Width) * wplayer.controls.currentItem.duration;
@@ -1772,6 +1692,7 @@ namespace ImperialMusicPlayer
             LibraryView.FocusedItem.EnsureVisible();
         }
 
+<<<<<<< HEAD
         private void repeatToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
         {
             if (repeat)         // toggle the repeat boolean?
@@ -1782,5 +1703,73 @@ namespace ImperialMusicPlayer
 
         
 
+=======
+        private void MusicPlayer_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            
+            var columns = from columnStatus status
+                             in db.ColumnStatus
+                          select status;
+            /*
+            foreach (ColumnHeader column in LibraryView.Columns)
+            {
+                if (column.Text == ((ToolStripMenuItem)e.ClickedItem).Text)
+                {
+                    index = column.Index;
+                }
+            }            
+            */
+            foreach(ToolStripMenuItem tsmi in viewToolStripMenuItem.DropDownItems)
+            {
+                //if(status.name.CompareTo(tsmi.Text.ToString()) == 0 && status.visible != tsmi.Checked)
+                {
+
+                    if (tsmi.Checked)
+                        ShowLibraryViewColumn(viewToolStripMenuItem.DropDownItems.IndexOf(tsmi)+2);
+                    else if(!tsmi.Checked)
+                        HideLibraryViewColumn(viewToolStripMenuItem.DropDownItems.IndexOf(tsmi)+2);
+                }
+            }
+
+            UpdateColumns();
+        }
+
+        private void contextMenuContainer_Opening(object sender, CancelEventArgs e)
+        {
+            //if mouse click fires, show trackmenu
+            if(mouse_click)
+            {
+                TrackMenu.Show(Cursor.Position);
+            }
+            //else show headermenu
+            else
+            {
+                HeaderMenu.Show(Cursor.Position);
+            }
+            //reset mouse_click flag
+            mouse_click = false;
+        }
+
     }
+
+    // Implements the manual sorting of items by columns. 
+    //From example at: http://msdn.microsoft.com/en-us/library/system.windows.forms.listview.listviewitemsorter(v=vs.110).aspx
+    class ListViewItemComparer : IComparer
+    {
+        private int col;
+        public ListViewItemComparer()
+        {
+            col = 0;
+        }
+        public ListViewItemComparer(int column)
+        {
+            col = column;
+        }
+        public int Compare(object x, object y)
+        {
+            return String.Compare(((ListViewItem)x).SubItems[col].Text, ((ListViewItem)y).SubItems[col].Text);
+        }
+>>>>>>> 1828f1d1cfb1ae2a75268e56c2573574432c76cd
+    }
+
 }
