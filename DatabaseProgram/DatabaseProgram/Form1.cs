@@ -530,7 +530,7 @@ namespace ImperialMusicPlayer
                         if (!(db.SongLibrary.Any(track => track.Path == path)))
                         {
                             InstertTrackIntoDataBaseFromFilePath(path);
-                            if (TreeExplorer.SelectedNode.Name != "Library" || TreeExplorer.SelectedNode.Name != "Playlist") {
+                            if (TreeExplorer.SelectedNode.Name.CompareTo("Library")!=0 && TreeExplorer.SelectedNode.Name.CompareTo("Playlist")!=0) {
                                 addSongToPlaylist(db.SongLibrary.OrderByDescending(i => i.ID).FirstOrDefault().ID, Convert.ToInt32(TreeExplorer.SelectedNode.Name));
                                 
                                 UpdateDisplay();
