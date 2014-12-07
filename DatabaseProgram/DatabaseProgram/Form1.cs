@@ -434,6 +434,9 @@ namespace ImperialMusicPlayer
 
             TreeExplorer.SelectedNode = TreeExplorer.Nodes[0];    
             UpdateDisplayToShowLibrary();
+            
+            //default sorting is on title
+            LibraryView.ListViewItemSorter = new ListViewItemComparer(1);
         }
         
         /// <summary>
@@ -1429,7 +1432,7 @@ namespace ImperialMusicPlayer
             MouseEventArgs ev = new MouseEventArgs(b,1,Cursor.Position.X,Cursor.Position.Y,0);
             LibraryView_ColumnRightClick(sender, ev);
             */
-            this.LibraryView.ListViewItemSorter = new ListViewItemComparer(e.Column);
+            LibraryView.ListViewItemSorter = new ListViewItemComparer(e.Column);
         }
         
         private void InitColumnStatusMenu()
@@ -1704,7 +1707,6 @@ namespace ImperialMusicPlayer
         {
             LibraryView.FocusedItem.EnsureVisible();
         } 
-
          
         private void MusicPlayer_FormClosing(object sender, FormClosingEventArgs e)
         {
