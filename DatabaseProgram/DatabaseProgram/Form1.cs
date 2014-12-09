@@ -467,8 +467,9 @@ namespace ImperialMusicPlayer
                         fs.Read(tag.Comment, 0, tag.Comment.Length);
                         fs.Read(tag.Genre, 0, tag.Genre.Length);
                         string theTAGID = Encoding.Default.GetString(tag.TAGID);
-                        
+
                         if (theTAGID.Equals("TAG"))
+                        //if(!theTAGID.Equals(null))
                         {
                             string Title = Encoding.Default.GetString(tag.Title);
                             string Artist = Encoding.Default.GetString(tag.Artist);
@@ -1461,7 +1462,21 @@ namespace ImperialMusicPlayer
             {
                 duration = wplayer.controls.currentItem.duration;
                 progressBar.Maximum = (int)duration;
-                progressBar.Value = (int)wplayer.controls.currentPosition;
+                
+                if ((int)wplayer.controls.currentPosition <= progressBar.Maximum)
+                {
+                    progressBar.Value = (int)wplayer.controls.currentPosition;
+                }
+                else
+                {
+                    wplayer.URL = "";
+                    currentTrackPosition = 0;
+                    wplayer.controls.currentPosition = 0;
+                    wplayer.controls.stop();
+                    CurrentSong.Clear();
+                    CurrentSong.AppendText("\nImperial Music Player");
+                }
+
                 TimeSpan currTime = TimeSpan.FromSeconds(wplayer.controls.currentPosition);
                 currentPositionTimer.Text = String.Format("{0:D2}:{1:D2}", currTime.Minutes, currTime.Seconds);//wplayer.controls.currentPositionString;
 
@@ -1688,6 +1703,12 @@ namespace ImperialMusicPlayer
 
         private void playRecentToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
+            //clear focused items
+            for (int i = 0; i < LibraryView.Items.Count; i++)
+            {
+                LibraryView.Items[i].Selected = false;
+            }
+
             String selected = e.ClickedItem.Text.ToString();
 
             //set focused item based on title; ideally should be on song id

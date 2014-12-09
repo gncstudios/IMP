@@ -751,7 +751,7 @@ namespace ImperialMusicPlayer
             // 
             this.durationTimer.AutoSize = true;
             this.durationTimer.ForeColor = System.Drawing.Color.Black;
-            this.durationTimer.Location = new System.Drawing.Point(481, 99);
+            this.durationTimer.Location = new System.Drawing.Point(489, 102);
             this.durationTimer.Name = "durationTimer";
             this.durationTimer.Size = new System.Drawing.Size(37, 19);
             this.durationTimer.TabIndex = 28;
